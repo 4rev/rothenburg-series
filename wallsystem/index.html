@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Wall System — Documentation | The Rothenburg Series</title>
+<meta name=description content="Full documentation for the Wall System plugin for Unreal Engine 5.8: installation, quick start, settings, destruction, navigation, Nanite, FAQ.">
+<meta property="og:title" content="Wall System — Documentation">
+<meta property="og:description" content="Install, quick start, settings, destruction, navigation and FAQ for the Wall System plugin for Unreal Engine 5.8.">
+<meta property="og:image" content="https://4rev.github.io/rothenburg-series/og.jpg">
+<link rel=preconnect href="https://fonts.googleapis.com">
+<link rel=preconnect href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel=stylesheet>
+<style>
+:root{
+  --paper:#F1F1EE; --ink:#1D2325; --muted:#59646A; --rule:#BCC1BE;
+  --gold:#C79E56; --teal:#1F6455; --panel:#E5E6E1; --code:#20262A;
+  --sans:'Archivo Narrow','Arial Narrow',Arial,sans-serif;
+  --serif:'EB Garamond',Georgia,'Times New Roman',serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
+  font-size:18px;line-height:1.62;-webkit-text-size-adjust:100%}
+.masthead{border-bottom:1px solid var(--rule);background:var(--paper)}
+.masthead .in{max-width:1180px;margin:0 auto;padding:18px 24px;display:flex;
+  align-items:baseline;gap:16px;flex-wrap:wrap}
+.masthead a.home{font-family:var(--sans);text-transform:uppercase;letter-spacing:.14em;
+  font-size:12px;color:var(--muted);text-decoration:none;border-bottom:1px solid transparent}
+.masthead a.home:hover{color:var(--teal);border-bottom-color:var(--teal)}
+.masthead .sheet{margin-left:auto;font-family:var(--sans);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;display:grid;
+  grid-template-columns:232px minmax(0,1fr);gap:52px;align-items:start}
+nav.toc{position:sticky;top:24px;padding:34px 0 40px;font-family:var(--sans);font-size:13.5px;
+  max-height:calc(100vh - 48px);overflow-y:auto}
+nav.toc .hd{text-transform:uppercase;letter-spacing:.16em;font-size:10.5px;color:var(--muted);
+  padding-bottom:9px;margin-bottom:11px;border-bottom:1px solid var(--rule)}
+nav.toc a{display:block;color:var(--muted);text-decoration:none;padding:3px 0;line-height:1.35}
+nav.toc a:hover{color:var(--teal)}
+nav.toc a.l3{padding-left:13px;font-size:12.5px;color:#8C9492}
+main{padding:34px 0 96px;min-width:0}
+h1{font-family:var(--sans);font-weight:700;font-size:42px;line-height:1.08;margin:.1em 0 .1em;
+  letter-spacing:-.01em}
+h1+p{font-size:20px;color:var(--muted);margin-top:.5em}
+h2{font-family:var(--sans);font-weight:600;font-size:26px;margin:2.5em 0 .55em;
+  padding-bottom:.28em;border-bottom:1px solid var(--rule);letter-spacing:-.005em}
+h3{font-family:var(--sans);font-weight:600;font-size:19px;margin:2em 0 .4em;color:var(--teal)}
+h4{font-family:var(--sans);font-weight:600;font-size:16px;margin:1.6em 0 .35em;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+p{margin:.85em 0}
+a{color:var(--teal)}
+strong{font-weight:600}
+hr{border:0;border-top:1px solid var(--rule);margin:2.6em 0}
+ul,ol{margin:.85em 0;padding-left:1.35em}
+li{margin:.34em 0}
+code{font-family:ui-monospace,'Cascadia Mono',Consolas,monospace;font-size:.855em;
+  background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:.06em .35em;
+  white-space:nowrap}
+pre{background:var(--code);color:#DEE3DF;padding:16px 18px;border-radius:4px;overflow-x:auto;
+  font-size:14px;line-height:1.55;margin:1.2em 0}
+pre code{background:none;border:0;padding:0;color:inherit;white-space:pre;font-size:inherit}
+blockquote{margin:1.2em 0;padding:.1em 0 .1em 18px;border-left:3px solid var(--gold);
+  color:var(--muted)}
+.tw{overflow-x:auto;margin:1.3em 0;border:1px solid var(--rule);border-radius:4px;background:#fff}
+table{border-collapse:collapse;width:100%;font-size:15.5px;font-family:var(--sans)}
+th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--rule);vertical-align:top}
+thead th{background:var(--panel);font-weight:600;font-size:12px;text-transform:uppercase;
+  letter-spacing:.09em;color:var(--muted);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td code{white-space:normal}
+footer{border-top:1px solid var(--rule);margin-top:20px;padding:26px 24px 52px;
+  font-family:var(--sans);font-size:12.5px;color:var(--muted)}
+footer .in{max-width:1180px;margin:0 auto;display:flex;gap:18px;flex-wrap:wrap}
+footer a{color:var(--muted)}
+@media(max-width:900px){
+  .wrap{grid-template-columns:1fr;gap:0}
+  nav.toc{position:static;max-height:none;padding:22px 0 6px;
+    border-bottom:1px solid var(--rule);margin-bottom:8px}
+  h1{font-size:33px} body{font-size:17px}
+}
+</style>
+</head>
+<body>
+<header class=masthead><div class=in>
+  <a class=home href="https://4rev.github.io/rothenburg-series/">&#8592; The Rothenburg Series</a>
+  <span class=sheet>Wall System &middot; Documentation &middot; v1.0 &middot; UE 5.8</span>
+</div></header>
+<div class=wrap>
+<nav class=toc><div class=hd>Contents</div>
+<a class="l2" href="#requirements">Requirements</a>
+<a class="l2" href="#installation">Installation</a>
+<a class="l2" href="#quick-start-60-seconds">Quick start (60 seconds)</a>
+<a class="l2" href="#re-baking-without-losing-your-hand-edits">Re-baking without losing your hand edits</a>
+<a class="l2" href="#what-s-in-the-box">What&#x27;s in the box</a>
+<a class="l2" href="#folder-layout">Folder layout</a>
+<a class="l2" href="#key-settings-on-bp-wallsplineactor">Key settings (on BP_WallSplineActor)</a>
+<a class="l2" href="#destruction-damage">Destruction &amp; damage</a>
+<a class="l3" href="#making-your-own-projectile-break-the-wall">Making your own projectile break the wall</a>
+<a class="l2" href="#demo-map">Demo map</a>
+<a class="l2" href="#navigation-ai">Navigation &amp; AI</a>
+<a class="l3" href="#1-recastnavmesh-project-settings-navigation-mesh-or-defaultengine-ini">1. RecastNavMesh (Project Settings → Navigation Mesh, or DefaultEngine.ini)</a>
+<a class="l3" href="#2-your-ai-character">2. Your AI character</a>
+<a class="l3" href="#3-nav-bounds-handled-for-you">3. Nav bounds — handled for you</a>
+<a class="l3" href="#4-stair-width">4. Stair width</a>
+<a class="l3" href="#checking-it">Checking it</a>
+<a class="l3" href="#guards-on-the-outside-path">Guards on the outside path</a>
+<a class="l2" href="#performance-notes">Performance notes</a>
+<a class="l2" href="#nanite-and-lods">Nanite and LODs</a>
+<a class="l2" href="#faq">FAQ</a>
+<a class="l2" href="#changelog">Changelog</a>
+<a class="l3" href="#1-0">1.0</a>
+<a class="l2" href="#known-limitations-v1">Known limitations (v1)</a>
+<a class="l2" href="#support">Support</a>
+</nav>
+<main>
+<h1 id="wall-system">Wall System</h1>
+<p>Procedural spline-driven castle wall generator for Unreal Engine, with towers, gates, stairs, decorations, and Chaos-based destructible collapse.</p>
+<p>Draw a spline, click <strong>Bake</strong>, and get a complete medieval curtain wall: segments that follow the curve, towers at the corners, gates with working portcullises, stairs onto the wall walk, buttresses and ruined sections for variety — all destructible, with smoke, debris, and crush damage built in.</p>
+<hr>
+<h2 id="requirements">Requirements</h2>
+<ul><li><strong>Unreal Engine 5.8 only.</strong> Earlier engines cannot open the pack&#x27;s assets — they are saved with 5.8 asset serialisation. Verified on 5.7: the C++ compiles cleanly, but no asset loads.</li><li>Plugin dependencies (enabled automatically): <strong>Niagara</strong>, <strong>ChaosNiagara</strong></li><li>No game-code dependencies — the plugin is fully self-contained.</li></ul>
+<h2 id="installation">Installation</h2>
+<ol><li>Copy the <code>WallSystem</code> folder into your project&#x27;s <code>Plugins/</code> directory (create it next to your <code>.uproject</code> if it doesn&#x27;t exist), or install from Fab.</li><li>Restart the editor. Confirm <strong>Edit → Plugins → Wall System</strong> is enabled.</li><li>For C++ projects, add <code>&quot;WallSystem&quot;</code> to your module&#x27;s dependencies only if you want to call the C++ API directly — Blueprint-only use needs nothing.</li></ol>
+<h2 id="quick-start-60-seconds">Quick start (60 seconds)</h2>
+<ol><li>Drag <strong><code>BP_WallSplineActor</code></strong> (Plugins → Wall System Content → Blueprints) into your level.</li><li>Select it and edit the <strong>Spline</strong> in the viewport — add/move points to draw your wall. Close the loop or leave it open; corners get towers automatically.</li><li>Tune the layout in the Details panel (see <em>Key settings</em> below). The preview updates live.</li><li>Click <strong>Bake To Level</strong> (Details → Wall | Bake) to spawn the real, destructible wall actors.</li><li>Press Play and knock it down (see <em>Destruction</em>), or walk the gates and stairs.</li></ol>
+<blockquote><strong>Bake workflow:</strong> baked actors are independent of the spline actor. To change the layout, edit the spline actor&#x27;s settings and bake again — property changes do not retro-apply to an already-baked wall.</blockquote>
+<h2 id="re-baking-without-losing-your-hand-edits">Re-baking without losing your hand edits</h2>
+<p>Baking again regenerates the layout, but it does <strong>not</strong> wipe the parts of the wall you have taken ownership of. Anything you moved, rotated, rescaled, or deleted stays that way, and the generator does not refill the slot underneath it.</p>
+<div class=tw><table><thead><tr><th>You did this to a baked actor</th><th>What the next bake does</th></tr></thead><tbody><tr><td>Moved / rotated / rescaled it</td><td>Leaves it exactly where you put it</td></tr><tr><td>Ticked <strong>Locked From Rebake</strong> on it</td><td>Leaves it alone, whatever you changed</td></tr><tr><td>Deleted it</td><td>Leaves the slot empty (see <em>Remember Deleted Slots</em>)</td></tr><tr><td>Nothing</td><td>Regenerates it from the current settings</td></tr></tbody></table></div>
+<p>Settings live under <strong>Wall | Bake</strong>:</p>
+<ul><li><strong>Preserve Hand Edits</strong> (default on) — untick for the old behaviour, where every bake destroys the whole wall and rebuilds it.</li><li><strong>Hand Edit Tolerance</strong> (default 1 cm) — how far an actor must have moved to count.</li><li><strong>Remember Deleted Slots</strong> (default on) — an actor you deleted stays deleted instead of reappearing on every bake.</li><li><strong>Reset To Generated</strong> — the undo. Forgets every lock and every deleted slot, then bakes, returning the wall to exactly what the current settings produce. This destroys your hand edits.</li></ul>
+<p>Notes:</p>
+<ul><li>Use <strong>Locked From Rebake</strong> for edits a transform comparison cannot see — a material swap, an added child component, a changed Blueprint property.</li><li>Buttresses and ruins belong to their segment rather than occupying a slot of their own, so they survive whenever their segment does and are regenerated when it isn&#x27;t.</li><li>Inserting a spline point in the middle of a wall renumbers the slots after it, so preserved actors past the insertion can be refilled. Edits at the end of the wall — the common case — keep their numbering.</li><li>⚠ In a World Partition level, baking while part of the wall sits in an unloaded region reads as &quot;deleted&quot; and suppresses those slots. Load the whole wall before baking, or clear the record afterwards with <strong>Reset To Generated</strong>.</li></ul>
+<h2 id="what-s-in-the-box">What&#x27;s in the box</h2>
+<div class=tw><table><thead><tr><th>Piece</th><th>What it does</th></tr></thead><tbody><tr><td><code>BP_WallSplineActor</code></td><td>The generator: spline + layout rules + live preview + Bake</td></tr><tr><td><code>BP_WallSegment_01</code></td><td>Destructible curtain-wall segment (HISM-batched pillars)</td></tr><tr><td><code>BP_WallTowerRound</code></td><td>Round corner/interval tower, auto-facing</td></tr><tr><td><code>BP_LowTowerSquared</code> + <code>BP_TopTowerSquared</code></td><td>Square tower: base and crown. The crown is its own actor, so the top can be shot off while the base stands</td></tr><tr><td><code>BP_WallGate</code></td><td>Gate tower with animated portcullis (opens/closes, drops on collapse)</td></tr><tr><td><code>BP_Stairs</code></td><td>Procedural stairs onto the wall walk, tower/corner-aware turn direction</td></tr><tr><td><code>BP_WallButtress</code>, <code>BP_WallRuinStub</code></td><td>Decorations: buttresses (seeded scatter) and ruined stubs</td></tr><tr><td><code>BP_WallCollapseGC</code> / <code>BP_TowerCollapseGC</code></td><td>Chaos Geometry Collection collapse effects</td></tr><tr><td>Demo map <code>/WallSystem/Maps/Demo</code></td><td>Fly-cam + cannon playground (see <em>Demo</em>)</td></tr></tbody></table></div>
+<h2 id="folder-layout">Folder layout</h2>
+<pre><code>WallSystem/Content/
+├─ Blueprints/          the actors you place, subclass, or point settings at
+│  ├─ Segments/           BP_WallSegment_01
+│  ├─ Towers/             round tower, square base + crown, gate
+│  ├─ WallDecorations/    buttress, ruin stub
+│  ├─ Torch/              BP_Torch
+│  └─ (root)              BP_WallSplineActor, BP_Stairs, the collapse GC actors
+├─ Wall_Elements/       one folder per physical element — SELF-CONTAINED
+│  └─ &lt;Element&gt;/          Meshes/ · Materials/ · Textures/ · Collection/ (Chaos)
+├─ FX/                  Niagara shared across elements (dust, smoke)
+├─ Sound_FX/            cues shared across elements (cannon fire, impact, collapse)
+└─ Maps/                Demo</code></pre>
+<p><strong>The one rule:</strong> everything belonging to a single element lives under its own <code>Wall_Elements/&lt;Element&gt;/</code> folder — mesh, material, textures, and its own FX and sound if nothing else uses them. <code>Torch/</code> is the clearest example: it carries its fire Niagara and its looping audio. Only genuinely <em>shared</em> effects sit in the top-level <code>FX/</code> and <code>Sound_FX/</code>.</p>
+<p>That means you can delete an element you don&#x27;t want, or copy one into another project, by taking a single folder. It also means each <code>Collection/</code> folder holds the Chaos Geometry Collection for that element, next to the mesh it was fractured from.</p>
+<h2 id="key-settings-on-bp-wallsplineactor">Key settings (on <code>BP_WallSplineActor</code>)</h2>
+<ul><li><strong>Wall | Classes</strong> — which segment/tower classes to use. <code>WallSegmentEntries</code> / <code>WallTowerEntries</code> are weighted lists; toggle <code>bRandomizeSegments</code> / <code>bRandomizeTowers</code> (with <code>TowerRandomSeed</code>) or pin a single <code>FixedSegmentClass</code> / <code>WallTowerClass</code>.</li><li><strong>Wall | Gate</strong> — <code>GateClass</code>, <code>GateCount</code>, <code>GateIndexOffset</code>. Gates are spaced evenly by slot index around the wall.</li><li><strong>Wall | Decorator</strong> — <code>RuinCount</code> (evenly spaced ruined sections), <code>ButtressCount</code> + <code>ButtressRandomSeed</code> (shuffled placement, width-only scale <code>ButtressScaleMin/Max</code>, height sink <code>ButtressHeightMin/Max</code>), <code>StairClass</code> + <code>StairCount</code> (stairs auto-pick their turn direction and skip towers/corners).</li><li><strong>Wall | Path</strong> — optional ground path outside the wall: <code>bGeneratePath</code>, <code>PathMesh</code>, <code>PathOutsideOffset</code>, tower standoff, ruin pull-in, flip randomization. Click <strong>Generate Path</strong> to rebuild it.</li><li><strong>Wall | Contagion</strong> — collapse spreading: <code>ContagionRadius</code> / <code>ContagionStrength</code> control how a falling section stresses its neighbours.</li></ul>
+<h2 id="destruction-damage">Destruction &amp; damage</h2>
+<ul><li>Wall pieces take standard <strong>point damage</strong> (<code>ApplyPointDamage</code> / any <code>AController</code>-less damage). Enough damage triggers the Chaos collapse with smoke, debris, and sound.</li></ul>
+<h3 id="making-your-own-projectile-break-the-wall">Making your own projectile break the wall</h3>
+<p>Damage is <strong>filtered by actor tag</strong> — otherwise the wall&#x27;s own Chaos debris and the radial splash of a collapse would hit neighbouring sections and set off a runaway chain reaction. Two ways in, on any wall structure (<code>Wall | Damage</code> category):</p>
+<ol><li><strong>Tag your projectile</strong> (recommended) — add its tag to <strong><code>Damage Source Tags</code></strong> (defaults to <code>Cannonball</code>, the demo cannonball&#x27;s tag), and in your projectile:<pre><code>Tags.Add(FName(&quot;MyProjectile&quot;));   // constructor or BeginPlay</code></pre></li><li><strong><code>Accept All Damage</code></strong> — tick it to skip the filter entirely. Handy while integrating; expect debris and explosions to collapse the wall on their own.</li></ol>
+<p>Then apply the damage on hit, with the projectile as the <strong>damage causer</strong>:</p>
+<pre><code>UGameplayStatics::ApplyPointDamage(HitWallActor, 3000.f, ShotDirection, Hit,
+    GetInstigatorController(), this /* damage causer — carries the tag */, nullptr);</code></pre>
+<p>Two things to get right, or the collapse looks wrong rather than broken:</p>
+<ul><li>Use <strong>point</strong> damage. A plain <code>ApplyDamage</code> carries no hit info, so the collapse has no direction and slumps straight down instead of blowing downrange.</li><li>The causer needs <strong>real velocity</strong> (<code>UProjectileMovementComponent</code> gives it for free). Impact speed is read from the causer; a hitscan or teleported actor reports 0 and gets the same direction-less slump.</li></ul>
+<p>Scale: a wall segment defaults to <strong>10000 health over 6 damage states</strong>, and the demo cannonball deals <strong>3000</strong> per hit — about four hits to bring a section down.</p>
+<ul><li>Collapsing chunks deal <strong>crush damage</strong> to characters underneath. To let your own character class react, implement <strong><code>IWallCrushVictim</code></strong> (C++ or Blueprint):</li><li><code>IsAliveForWallCrush()</code> — return false to be skipped.</li><li><code>OnWallCrush(LaunchVelocity, ImpactPoint)</code> — kill/ragdoll/launch your character.</li><li>Ruined stub segments are indestructible by design (they&#x27;re already ruins).</li></ul>
+<h2 id="demo-map">Demo map</h2>
+<p>Open <code>/WallSystem/Maps/Demo</code> and press Play (the map&#x27;s Game Mode override is <code>WallDemoGameMode</code>):</p>
+<ul><li><strong>Mouse</strong> — look · <strong>WASD</strong> — fly · <strong>E / Space</strong> — up · <strong>Q / Ctrl</strong> — down</li><li><strong>Left mouse button</strong> — fire a cannonball. A handful of hits collapses a section.</li><li><strong>C</strong> — man the nearest placed cannon. Fly close and a prompt appears over it. The view drops between the cannon&#x27;s wheels, the mouse lays the gun — left/right heaves the carriage round, up/down works the elevation within the quoin&#x27;s travel (about 10 degrees up and 6 down from where the gun is laid, which is the order of adjustment a 17th-century field carriage allowed) — and the left mouse button fires it. <strong>Esc</strong> (or <strong>C</strong> again) steps back off.</li><li><strong>T</strong> — auto-fire every cannon at once · <strong>R</strong> — reload the level and start over.</li></ul>
+<p>The demo uses raw input — no Enhanced Input assets or project settings required.</p>
+<blockquote>In Play-In-Editor the editor keeps <strong>Esc</strong> for stopping the session, so use <strong>C</strong> to step off the gun there. <strong>Esc</strong> works normally in a packaged build.</blockquote>
+<h2 id="navigation-ai">Navigation &amp; AI</h2>
+<p>Stairs, wall-walk and towers are authored for AI. A staircase emits a smooth nav ramp, a chain of off-mesh links, and a landing pad bridging its top onto the walkway, so an ordinary <code>AAIController</code> can path from the ground onto the wall and back.</p>
+<p><strong>Navigation will not work until your project is set up for it.</strong> These are the settings, and the reasons — none of them are defaults.</p>
+<h3 id="1-recastnavmesh-project-settings-navigation-mesh-or-defaultengine-ini">1. RecastNavMesh (Project Settings → Navigation Mesh, or <code>DefaultEngine.ini</code>)</h3>
+<pre><code>[/Script/NavigationSystem.RecastNavMesh]
+AgentMaxSlope=60.000000      ; MUST exceed your stair ramp angle. The default
+                             ; staircase (StepRise 20 / StepRun 15) is 53.13 deg;
+                             ; at the engine default of 44 the AI is told every
+                             ; flight is unwalkable and never leaves the ground.
+AgentRadius=36.000000        ; Your pawn&#x27;s CAPSULE radius plus a small margin, and no
+                             ; more. Recast erodes every walkable surface inward by this
+                             ; on BOTH sides, so each centimetre you overclaim costs two
+                             ; off the width of every walkway, doorway and flight. A
+                             ; default character capsule is 34; at 42 the wall walk on
+                             ; the demo map broke into disconnected islands and the AI
+                             ; went down one staircase and up another rather than along
+                             ; the parapet. Dropping it to 36 reconnected it.
+AgentHeight=192.000000
+RuntimeGeneration=Dynamic    ; Only if you use the destruction. A collapsed
+                             ; section must stop being walkable.
+
+; Voxel size, per resolution. Finer than the engine default ON PURPOSE: Recast
+; voxelises a slope in CellSize steps, so at the default 25 a 53 deg ramp rises
+; ~33cm per step. That is close enough to AgentMaxStepHeight (default 35) that
+; the generator drops spans and the flight comes out full of HOLES -- and an AI
+; that walks into one is stranded part way up. At 10 the rise is ~17cm.
+NavMeshResolutionParams[0]=(CellSize=10.000000,CellHeight=5.000000,AgentMaxStepHeight=45.000000)
+NavMeshResolutionParams[1]=(CellSize=10.000000,CellHeight=5.000000,AgentMaxStepHeight=45.000000)
+NavMeshResolutionParams[2]=(CellSize=10.000000,CellHeight=5.000000,AgentMaxStepHeight=45.000000)</code></pre>
+<blockquote>⚠ <strong><code>CellSize</code>, <code>CellHeight</code> and <code>AgentMaxStepHeight</code> moved into <code>NavMeshResolutionParams</code> in UE 5.5 and the flat keys are deprecated.</strong> The generator reads the per-resolution values and never looks at the flat ones, so setting only <code>CellSize=10</code> does nothing at all — silently. Symptom: the engine keeps printing <em>&quot;AgentMaxStepHeight (35.000000) for resolution Low is not high enough in steep slopes&quot;</em> on every build even though your ini says 45, and your AI strands itself on the stairs. Set all three resolutions: a tile picks its resolution independently, so leaving the other two coarse just moves the holes elsewhere on the wall.</blockquote>
+<blockquote>⚠ <strong>A <code>RecastNavMesh-Default</code> actor saved in your map overrides all of the above.</strong> The settings here only apply to a navmesh the system creates fresh. If your map already contains one (it does, once you have built paths), edit <em>its</em> Details panel instead — or delete it and let it be recreated. This is silent and easy to lose a day to: the ini reads correctly while the navmesh uses something else entirely.</blockquote>
+<h3 id="2-your-ai-character">2. Your AI character</h3>
+<p><code>AgentMaxSlope</code> is only the pathfinding half. The movement half lives on your pawn:</p>
+<pre><code>GetCharacterMovement()-&gt;SetWalkableFloorAngle(60.f);  // keep in step with AgentMaxSlope
+GetCharacterMovement()-&gt;MaxStepHeight = 45.f;</code></pre>
+<p>Without it the AI happily paths up a flight and then slides back down it, because the character&#x27;s own default walkable angle is ~44 deg.</p>
+<h3 id="3-nav-bounds-handled-for-you">3. Nav bounds — handled for you</h3>
+<p><strong>The wall spawns and sizes its own <code>NavMeshBoundsVolume</code> at bake</strong> (<code>bFitNavBounds</code>, on by default). Build your wall anywhere, bake, and the box follows — wrapping the wall, its towers and stairs, and the outside path the guards patrol.</p>
+<div class=tw><table><thead><tr><th>Property</th><th>Default</th><th>What it does</th></tr></thead><tbody><tr><td><code>bFitNavBounds</code></td><td><code>true</code></td><td>Off = the volume this wall made is removed and you manage nav bounds yourself</td></tr><tr><td><code>NavBoundsPadding</code></td><td><code>600</code></td><td>Slack (cm) sideways and below. Must clear <code>PathOutsideOffset</code> or the guards on the path have nothing to stand on</td></tr></tbody></table></div>
+<p>The ceiling is <strong>not</strong> padded — it is the top of the tallest colliding geometry plus the nav agent&#x27;s height, which is exactly enough for an agent to stand on the highest surface and not one centimetre more. Recast rasterises the full Z span of every tile, so height you cannot stand on is paid for on every tile, forever.</p>
+<blockquote>⚠ <strong>The volume does not follow a wall you MOVE until you bake again.</strong> Moving the spline rebuilds the wall; the nav bounds are re-fitted at bake time. Symptom of forgetting: the wall is in its new place and no AI can path anywhere near it.</blockquote>
+<blockquote>⚠ <strong>Delete nav bounds volumes you no longer need.</strong> This wall only ever touches the volume it created itself — yours are never moved or resized, because overlapping nav bounds simply union. But a leftover volume over empty ground still generates navmesh tiles across its whole footprint, which is pure cost.</blockquote>
+<p>If you&#x27;d rather place it by hand, turn <code>bFitNavBounds</code> off. The volume must then enclose the wall <strong>and its full height</strong> — the walkway is several metres up. A volume fitted to the ground plane produces a wall no AI can get onto, with no error to say why.</p>
+<h3 id="4-stair-width">4. Stair width</h3>
+<p>Recast erodes every walkable surface inward by the nav agent&#x27;s radius <strong>on both sides</strong>, so a flight narrower than roughly <code>2 x AgentRadius + a voxel</code> generates <strong>no navmesh at all</strong> and is crossed on the off-mesh links alone. Set <code>WallStairWidth</code> on the wall spline to <strong>150 or more</strong> for staircases your AI must use — 200 lets two agents pass. Narrow tower spirals are for players; see <em>Known limitations</em>.</p>
+<h3 id="checking-it">Checking it</h3>
+<p>Play the demo map (<code>/WallSystem/Maps/Demo</code>). Two soldiers walk a <strong>circuit</strong> of the wall in opposite directions: up one staircase, along the walkway to a second, down that one, back through the city to the first, forever. Because they run the same ring the other way round, they meet and pass once a lap. <strong>N</strong> respawns them without leaving Play.</p>
+<p>The log line <code>Circuit: &#x27;...&#x27; completed lap 1</code> is the confirmation, and it is a stronger one than any single climb: a lap is only possible if the stairs, the walkway and the ground are one connected navmesh, so any break anywhere in the ring stops it.</p>
+<p>For the narrower test — one soldier per staircase, climbing and coming straight back — tick <code>bSpawnStairWalkers</code> on the GameMode. That isolates a single flight, which is what you want when one particular staircase is the thing being debugged.</p>
+<h3 id="guards-on-the-outside-path">Guards on the outside path</h3>
+<p>The wall spawns a path spline outside itself (<code>bGeneratePath</code>). To put sentries on it, drop a <strong>Path Patrol Actor</strong> anywhere in the level. With no configuration at all it finds the path, samples it into waypoints, and walks two soldiers along it forever.</p>
+<div class=tw><table><thead><tr><th>Property</th><th>Default</th><th>What it does</th></tr></thead><tbody><tr><td><code>PathActor</code></td><td><em>(empty)</em></td><td>Which path to walk. Empty + <code>bAutoFindPath</code> uses the one the wall spawned.</td></tr><tr><td><code>PatrolCount</code></td><td><code>2</code></td><td>How many soldiers.</td></tr><tr><td><code>Formation</code></td><td><code>Together</code></td><td><code>Together</code> — one behind the other, same direction. <code>Opposite</code> — spread round the path, alternating direction, so they meet and pass.</td></tr><tr><td><code>FollowSpacing</code></td><td><code>500</code></td><td>Gap (cm) between soldiers in <code>Together</code>. Below ~300 the follower catches the leader on corners.</td></tr><tr><td><code>PointSpacing</code></td><td><code>600</code></td><td>Distance between sampled waypoints. Wider sampling lets the AI cut corners off the road.</td></tr><tr><td><code>PatrolClass</code></td><td><code>WallDemoGarrison</code></td><td>Swap in your own soldier — any subclass works unchanged.</td></tr></tbody></table></div>
+<p>An <strong>open</strong> path is walked out and back; a <strong>closed</strong> one is walked as a loop.</p>
+<blockquote>⚠ <strong>The nav bounds must cover the path, which lies <em>outside</em> the walls.</strong> A <code>NavMeshBoundsVolume</code> fitted to the wall ring stops short of it, and the symptom is a road with nobody on it. The actor says so in the log rather than standing there in silence: <em>&quot;Path patrol &#x27;...&#x27;: gave up after 20s&quot;</em> means no navmesh; <em>&quot;N% of the path has no navmesh under it&quot;</em> means the bounds reach part of the way.</blockquote>
+<h2 id="performance-notes">Performance notes</h2>
+<ul><li>Wall segments batch their meshes into <strong>HISM</strong> instances at bake time (this is the big draw-call win; a full castle ring runs in a few dozen draw calls for segments).</li><li>Towers, gates, and decorations are individual actors in this version — budget accordingly for very large layouts.</li><li>All wall actors tick only while settling/collapsing and disable tick afterwards.</li></ul>
+<h2 id="nanite-and-lods">Nanite and LODs</h2>
+<p><strong>Every static mesh in the pack ships with Nanite enabled — all 31 of them.</strong> That is a deliberate choice, and it is why you will not find hand-authored LOD chains: Nanite does the level-of-detail work itself, per-cluster, and a second LOD would only be dead weight alongside it.</p>
+<p>The meshes are modest to begin with. The heaviest is <code>Wood_12</code> at <strong>6,830 triangles</strong>; the towers and gate sit between 900 and 1,800; most elements are well under 2,000.</p>
+<p><strong>If you turn Nanite off</strong> — for a mobile or VR target, or a forward renderer — the meshes fall back to <strong>LOD0 only</strong>, because that is the only LOD present. In practice this is rarely a problem at these triangle counts, but if you are filling a landscape with wall rings and want LOD chains anyway, the fastest route is Unreal&#x27;s own <strong>Static Mesh Editor → LOD Settings → Auto LOD generation</strong>, applied in bulk. Nothing in the plugin&#x27;s code or Blueprints depends on the LOD count, so adding LODs is safe.</p>
+<h2 id="faq">FAQ</h2>
+<p><strong>Does my own projectile break the wall?</strong> Yes. See <em>Making your own projectile break the wall</em> above — you do not need to subclass anything. Set <code>DamageSourceTags</code> on the wall actor to match your projectile&#x27;s tags, or set <code>bAcceptAllDamage</code> if you would rather every damage source count.</p>
+<p><strong>Can AI walk on the wall?</strong> Yes, and it is the feature the pack is built around. Wall staircases at <code>WallStairWidth</code> 150 or more generate navmesh and AI climbs them reliably. ⚠ The <strong>tower</strong> spiral defaults to 78 cm so it fits a 300 cm tower interior — that is under <code>2 x AgentRadius</code>, so no navmesh generates inside it. See <em>Known limitations</em>. Follow <em>Navigation &amp; AI</em> above; nav setup is the single most common cause of &quot;my AI won&#x27;t climb it&quot;.</p>
+<p><strong>Do I need C++?</strong> No. Everything is drivable from Blueprint and the details panel. The plugin is C++ internally, but you only add <code>&quot;WallSystem&quot;</code> to your module dependencies if you want to call the API directly.</p>
+<p><strong>Can I use my own meshes and materials?</strong> Yes. <code>BP_WallSplineActor</code>&#x27;s <strong>Wall | Classes</strong> section takes your own segment and tower classes. Each element lives in its own self-contained <code>Wall_Elements/&lt;Element&gt;/</code> folder, so you can also duplicate one, swap the mesh, and point the generator at your copy.</p>
+<p><strong>Will re-baking destroy the edits I made by hand?</strong> No. Slots you hand-edited, locked, or deleted survive a re-bake — they are matched by <code>StructureID</code>, not by index. See <em>Re-baking without losing your hand edits</em>.</p>
+<p><strong>Does it work in a packaged Shipping build?</strong> Yes. The plugin is a runtime module with no editor-only dependencies.</p>
+<p><strong>Is the demo content required?</strong> No. <code>Maps/Demo</code> and the cannon are there to show the system; delete the folder and the generator is unaffected.</p>
+<h2 id="changelog">Changelog</h2>
+<h3 id="1-0">1.0</h3>
+<ul><li>First release: spline wall generator with segments, round and square towers, gates with working portcullises, procedural stairs, buttresses and ruin decorations.</li><li>Chaos-based destructible collapse with dust, debris, crush damage and camera shake.</li><li>AI-navigable wall staircases with garrison and outside-path patrol.</li><li>Non-destructive re-bake: hand-edited, locked and deleted slots survive.</li><li>Demo map with a fly-cam and manned falconets — traverse, elevate, fire, and a full recoil on every shot: the gun runs back a metre on its wheels, the barrel jumps in its trunnions, and the camera takes the blast.</li></ul>
+<h2 id="known-limitations-v1">Known limitations (v1)</h2>
+<ul><li>Spline corners use butt-jointed segments (no mitered corner meshes).</li><li>Decoration meshes (buttresses/ruins) are not HISM-batched yet.</li><li><strong>Narrow tower spirals are not AI-navigable.</strong> The tower staircase defaults to 78cm so it fits a 300cm tower interior and looks right, but that is under <code>2 x AgentRadius</code>, so it generates no navmesh and an AI cannot reliably climb it — measured as a plain <code>AAIController</code> failing to make the ascent while both wall staircases succeed. Wall staircases at <code>WallStairWidth</code> 150+ are the AI route onto the wall. Widen the tower stairs if you need AI inside it, and expect the spiral to look cramped.</li></ul>
+<h2 id="support">Support</h2>
+<ul><li>Seller: <strong>Pierogi3</strong> — https://www.fab.com/sellers/Pierogi3</li><li>Report issues via the Fab listing&#x27;s <em>Questions</em> section.</li></ul>
+</main>
+</div>
+<footer><div class=in>
+  <span>&copy; 2026 Pierogi3. All rights reserved.</span>
+  <a href="https://4rev.github.io/rothenburg-series/">Catalog</a>
+  <a href="https://www.fab.com/sellers/Pierogi3">Fab store</a>
+</div></footer>
+</body>
+</html>
