@@ -3,10 +3,10 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<title>Wall System — Documentation | The Rothenburg Series</title>
-<meta name=description content="Full documentation for the Wall System plugin for Unreal Engine 5.8: installation, quick start, settings, destruction, navigation, Nanite, FAQ.">
-<meta property="og:title" content="Wall System — Documentation">
-<meta property="og:description" content="Install, quick start, settings, destruction, navigation and FAQ for the Wall System plugin for Unreal Engine 5.8.">
+<title>Medieval Wall Generator — Documentation | Unreal Engine 5 Plugin</title>
+<meta name=description content="Documentation for Medieval Wall Generator, a spline-driven destructible castle wall plugin for Unreal Engine 5.8: installation, quick start, settings, Chaos destruction, AI navigation, Nanite, FAQ.">
+<meta property="og:title" content="Medieval Wall Generator — Documentation">
+<meta property="og:description" content="Draw a spline, bake a destructible medieval castle wall your AI can garrison. Install, quick start, settings, destruction, navigation and FAQ. Unreal Engine 5.8 code plugin.">
 <meta property="og:image" content="https://4rev.github.io/rothenburg-series/og.jpg">
 <link rel=preconnect href="https://fonts.googleapis.com">
 <link rel=preconnect href="https://fonts.gstatic.com" crossorigin>
@@ -28,6 +28,10 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
 .masthead a.home{font-family:var(--sans);text-transform:uppercase;letter-spacing:.14em;
   font-size:12px;color:var(--muted);text-decoration:none;border-bottom:1px solid transparent}
 .masthead a.home:hover{color:var(--teal);border-bottom-color:var(--teal)}
+.masthead a.buy{font-family:var(--sans);text-transform:uppercase;letter-spacing:.12em;
+  font-size:11px;font-weight:700;text-decoration:none;color:var(--paper);background:var(--teal);
+  padding:7px 13px;border-radius:2px;white-space:nowrap}
+.masthead a.buy:hover{background:var(--ink)}
 .masthead .sheet{margin-left:auto;font-family:var(--sans);font-size:11px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted)}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px;display:grid;
@@ -84,7 +88,8 @@ footer a{color:var(--muted)}
 <body>
 <header class=masthead><div class=in>
   <a class=home href="https://4rev.github.io/rothenburg-series/">&#8592; The Rothenburg Series</a>
-  <span class=sheet>Wall System &middot; Documentation &middot; v1.0 &middot; UE 5.8</span>
+  <span class=sheet>Medieval Wall Generator &middot; Documentation &middot; v1.0 &middot; UE 5.8</span>
+  <a class=buy href="https://www.fab.com/listings/aca56f80-cb23-4aca-8c51-ba31bc07070e">Get it on Fab &middot; $39.99</a>
 </div></header>
 <div class=wrap>
 <nav class=toc><div class=hd>Contents</div>
@@ -242,12 +247,13 @@ GetCharacterMovement()-&gt;MaxStepHeight = 45.f;</code></pre>
 <h2 id="known-limitations-v1">Known limitations (v1)</h2>
 <ul><li>Spline corners use butt-jointed segments (no mitered corner meshes).</li><li>Decoration meshes (buttresses/ruins) are not HISM-batched yet.</li><li><strong>Narrow tower spirals are not AI-navigable.</strong> The tower staircase defaults to 78cm so it fits a 300cm tower interior and looks right, but that is under <code>2 x AgentRadius</code>, so it generates no navmesh and an AI cannot reliably climb it — measured as a plain <code>AAIController</code> failing to make the ascent while both wall staircases succeed. Wall staircases at <code>WallStairWidth</code> 150+ are the AI route onto the wall. Widen the tower stairs if you need AI inside it, and expect the spiral to look cramped.</li></ul>
 <h2 id="support">Support</h2>
-<ul><li>Seller: <strong>Pierogi3</strong> — https://www.fab.com/sellers/Pierogi3</li><li>Report issues via the Fab listing&#x27;s <em>Questions</em> section.</li></ul>
+<ul><li>Get the plugin: <strong><a href="https://www.fab.com/listings/aca56f80-cb23-4aca-8c51-ba31bc07070e">Medieval Wall Generator on Fab</a></strong> — $39.99, Unreal Engine 5.8.</li><li>Seller: <strong>Pierogi3</strong> — https://www.fab.com/sellers/Pierogi3</li><li>Report issues via the Fab listing&#x27;s <em>Questions</em> section.</li></ul>
 </main>
 </div>
 <footer><div class=in>
   <span>&copy; 2026 Pierogi3. All rights reserved.</span>
   <a href="https://4rev.github.io/rothenburg-series/">Catalog</a>
+  <a href="https://www.fab.com/listings/aca56f80-cb23-4aca-8c51-ba31bc07070e">Get the plugin &middot; $39.99</a>
   <a href="https://www.fab.com/sellers/Pierogi3">Fab store</a>
 </div></footer>
 </body>
