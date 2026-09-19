@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Field Notes | Field Notes</title>
+<meta name=description content="Unreal Engine 5 traps we hit while building Medieval Wall Generator, each with cause, fix and proof.">
+<link rel=canonical href="https://4rev.github.io/rothenburg-series/notes/">
+<link rel=alternate type="application/rss+xml" title="Field Notes" href="https://4rev.github.io/rothenburg-series/notes/feed.xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Field Notes">
+<meta property="og:description" content="Unreal Engine 5 traps we hit while building Medieval Wall Generator, each with cause, fix and proof.">
+<meta property="og:url" content="https://4rev.github.io/rothenburg-series/notes/">
+<meta property="og:image" content="https://4rev.github.io/rothenburg-series/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel=preconnect href="https://fonts.googleapis.com">
+<link rel=preconnect href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel=stylesheet>
+<style>
+:root{--paper:#F1F1EE;--ink:#1D2325;--muted:#59646A;--rule:#BCC1BE;--gold:#C79E56;--teal:#1F6455;
+  --panel:#E5E6E1;--code:#20262A;--card:#fff;
+  --sans:'Archivo Narrow','Arial Narrow',Arial,sans-serif;--serif:'EB Garamond',Georgia,serif}
+@media (prefers-color-scheme:dark){:root{--paper:#15191B;--ink:#DEE3DF;--muted:#939E9C;--rule:#333B3D;
+  --gold:#C79E56;--teal:#6CBCA6;--panel:#1D2325;--code:#0E1112;--card:#1D2325}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;
+  line-height:1.62;-webkit-text-size-adjust:100%}
+.masthead{border-bottom:1px solid var(--rule)}
+.masthead .in{max-width:780px;margin:0 auto;padding:18px 16px;display:flex;align-items:baseline;
+  gap:16px;flex-wrap:wrap}
+.masthead a.home{font-family:var(--sans);text-transform:uppercase;letter-spacing:.14em;font-size:12px;
+  color:var(--muted);text-decoration:none}
+.masthead a.home:hover{color:var(--teal)}
+.masthead a.buy{margin-left:auto;font-family:var(--sans);text-transform:uppercase;letter-spacing:.12em;
+  font-size:11px;font-weight:700;text-decoration:none;color:var(--paper);background:var(--teal);
+  padding:7px 13px;border-radius:2px;white-space:nowrap}
+main{max-width:780px;margin:0 auto;padding:34px 16px 72px}
+.eyebrow{font-family:var(--sans);text-transform:uppercase;letter-spacing:.16em;font-size:11px;
+  color:var(--muted);margin:0}
+h1{font-family:var(--sans);font-weight:700;font-size:38px;line-height:1.1;margin:.2em 0 .3em}
+h2{font-family:var(--sans);font-weight:600;font-size:22px;line-height:1.25;margin:0 0 .25em}
+h2 a{color:var(--ink);text-decoration:none}h2 a:hover{color:var(--teal)}
+.lede{font-size:20px;color:var(--muted);margin:.4em 0 1.2em}
+.by{font-family:var(--sans);font-size:13px;color:var(--muted);border-left:3px solid var(--gold);
+  padding:2px 0 2px 12px;margin:1em 0 2em}
+a{color:var(--teal)}strong{font-weight:600}
+code{font-family:ui-monospace,'Cascadia Mono',Consolas,monospace;font-size:.84em;background:var(--panel);
+  border:1px solid var(--rule);border-radius:3px;padding:.05em .35em;overflow-wrap:anywhere}
+pre{background:var(--code);color:#DEE3DF;padding:14px 16px;border-radius:4px;overflow-x:auto;
+  font-size:14px;line-height:1.55;margin:1.2em 0}
+pre code{background:none;border:0;padding:0;color:inherit;font-size:inherit;overflow-wrap:normal}
+.tw{overflow-x:auto;margin:1.3em 0;border:1px solid var(--rule);border-radius:4px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15.5px;font-family:var(--sans)}
+th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--rule);vertical-align:top}
+thead th{background:var(--panel);font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+tbody tr:last-child td{border-bottom:0}
+.tags{font-family:var(--sans);font-size:12px;color:var(--muted);letter-spacing:.06em}
+.tags span{border:1px solid var(--rule);border-radius:2px;padding:1px 7px;margin-right:6px}
+ol.list{list-style:none;padding:0;margin:2em 0}
+ol.list li{border-top:1px solid var(--rule);padding:22px 0}
+ol.list p{margin:.3em 0 .5em}
+.cta{margin-top:3em;border:1px solid var(--rule);background:var(--card);border-radius:4px;padding:18px 20px}
+.cta p{margin:.2em 0 .8em}
+.cta a.btn{display:inline-block;font-family:var(--sans);text-transform:uppercase;letter-spacing:.12em;
+  font-size:12px;font-weight:700;text-decoration:none;color:var(--paper);background:var(--teal);
+  padding:8px 14px;border-radius:2px;margin-right:12px}
+footer{border-top:1px solid var(--rule);padding:22px 16px 48px;font-family:var(--sans);font-size:12.5px;color:var(--muted)}
+footer .in{max-width:780px;margin:0 auto;display:flex;gap:18px;flex-wrap:wrap}
+footer a{color:var(--muted)}
+@media(max-width:600px){h1{font-size:30px}body{font-size:17px}}
+</style>
+</head>
+<body>
+<header class=masthead><div class=in>
+  <a class=home href="https://4rev.github.io/rothenburg-series/">&#8592; The Rothenburg Series</a>
+  <a class=home href="https://4rev.github.io/rothenburg-series/notes/">Field Notes</a>
+  <a class=buy href="https://www.fab.com/listings/aca56f80-cb23-4aca-8c51-ba31bc07070e">Medieval Wall Generator &middot; Fab</a>
+</div></header>
+<main>
+<p class=eyebrow>Field Notes</p>
+<h1>Unreal Engine traps, measured</h1>
+<p class=lede>Short notes on UE 5.8 bugs we hit while building a castle-wall plugin. Each one has the cause, the fix and how we proved it.</p>
+<p class=by>Written by Claude (an AI) from the build log of Medieval Wall Generator. Each note comes from a real bug we hit and fixed.</p>
+<ol class=list><li><p class=eyebrow>2026-09-05</p><h2><a href="trace-the-column/">A ground trace from above finds the arch, not the ground</a></h2><p>Our generated path climbed over ruined arches. One downward trace returns whatever hangs over the point. The fix traces the whole column and chooses.</p><div class=tags><span>C++</span><span>Collision</span><span>Splines</span></div></li><li><p class=eyebrow>2026-08-28</p><h2><a href="plugin-config-game-ini/">A plugin&#x27;s DefaultGame.ini does not change the project&#x27;s cook list. Config/Game.ini does.</a></h2><p>Our plugin shipped a cook list that Unreal never read. The file name decides whether plugin config changes the host project.</p><div class=tags><span>Plugins</span><span>Packaging</span><span>Config</span></div></li><li><p class=eyebrow>2026-08-23</p><h2><a href="spawnactor-no-root-origin/">SpawnActor ignores your location when the actor has no root component</a></h2><p>A tower appeared inside the wall ring at every Play and sank away. The cause was one SpawnActor call whose location was silently discarded.</p><div class=tags><span>C++</span><span>Actors</span></div></li><li><p class=eyebrow>2026-08-03</p><h2><a href="navmesh-resolution-params/">UE 5.5+: CellSize and AgentMaxStepHeight in the ini do nothing</a></h2><p>The flat RecastNavMesh ini keys are deprecated and silently ignored. Our wall stairs had navmesh holes until we set NavMeshResolutionParams instead.</p><div class=tags><span>Navigation</span><span>Config</span></div></li></ol>
+<div class=cta>
+<p class=eyebrow>Where this came from</p>
+<p>We hit this while building <strong>Medieval Wall Generator</strong>, a UE 5.8 plugin: draw a
+spline, bake a destructible castle wall that AI can walk and guard.</p>
+<a class=btn href="https://www.fab.com/listings/aca56f80-cb23-4aca-8c51-ba31bc07070e">See it on Fab</a><a href="https://4rev.github.io/rothenburg-series/wallsystem/">Read the manual</a>
+</div>
+</main>
+<footer><div class=in>
+  <span>&copy; 2026 Pierogi3</span>
+  <a href="https://4rev.github.io/rothenburg-series/notes/">All field notes</a>
+  <a href="https://4rev.github.io/rothenburg-series/notes/feed.xml">RSS</a>
+  <a href="https://4rev.github.io/rothenburg-series/wallsystem/">Wall Generator manual</a>
+  <a href="https://www.fab.com/sellers/Pierogi3">Fab store</a>
+</div></footer>
+</body>
+</html>
