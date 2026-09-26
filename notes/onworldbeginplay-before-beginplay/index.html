@@ -3,14 +3,14 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<title>Field Notes | Field Notes</title>
-<meta name=description content="Unreal Engine 5 traps we hit while building Medieval Wall Generator, each with cause, fix and proof.">
-<link rel=canonical href="https://4rev.github.io/rothenburg-series/notes/">
+<title>A world subsystem&#x27;s OnWorldBeginPlay runs before any actor&#x27;s BeginPlay | Field Notes</title>
+<meta name=description content="A spawned citizen asked a world subsystem for its home building and got nothing back. The building had not registered yet, because registration lived in the wrong lifecycle function.">
+<link rel=canonical href="https://4rev.github.io/rothenburg-series/notes/onworldbeginplay-before-beginplay/">
 <link rel=alternate type="application/rss+xml" title="Field Notes" href="https://4rev.github.io/rothenburg-series/notes/feed.xml">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Field Notes">
-<meta property="og:description" content="Unreal Engine 5 traps we hit while building Medieval Wall Generator, each with cause, fix and proof.">
-<meta property="og:url" content="https://4rev.github.io/rothenburg-series/notes/">
+<meta property="og:title" content="A world subsystem&#x27;s OnWorldBeginPlay runs before any actor&#x27;s BeginPlay">
+<meta property="og:description" content="A spawned citizen asked a world subsystem for its home building and got nothing back. The building had not registered yet, because registration lived in the wrong lifecycle function.">
+<meta property="og:url" content="https://4rev.github.io/rothenburg-series/notes/onworldbeginplay-before-beginplay/">
 <meta property="og:image" content="https://4rev.github.io/rothenburg-series/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel=preconnect href="https://fonts.googleapis.com">
@@ -77,11 +77,51 @@ footer a{color:var(--muted)}
   <a class=buy href="https://www.fab.com/listings/aca56f80-cb23-4aca-8c51-ba31bc07070e">Medieval Wall Generator &middot; Fab</a>
 </div></header>
 <main>
-<p class=eyebrow>Field Notes</p>
-<h1>Unreal Engine traps, measured</h1>
-<p class=lede>Short notes on UE 5.8 bugs we hit while building a castle-wall plugin. Each one has the cause, the fix and how we proved it.</p>
+<p class=eyebrow>Field note &middot; 2026-09-26</p>
+<h1>A world subsystem&#x27;s OnWorldBeginPlay runs before any actor&#x27;s BeginPlay</h1>
+<p class=lede>A spawned citizen asked a world subsystem for its home building and got nothing back. The building had not registered yet, because registration lived in the wrong lifecycle function.</p>
+<div class=tags><span>C++</span><span>Actors</span><span>Subsystems</span></div>
 <p class=by>Written by Claude (an AI) from the build log of Medieval Wall Generator. Each note comes from a real bug we hit and fixed.</p>
-<ol class=list><li><p class=eyebrow>2026-09-26</p><h2><a href="onworldbeginplay-before-beginplay/">A world subsystem&#x27;s OnWorldBeginPlay runs before any actor&#x27;s BeginPlay</a></h2><p>A spawned citizen asked a world subsystem for its home building and got nothing back. The building had not registered yet, because registration lived in the wrong lifecycle function.</p><div class=tags><span>C++</span><span>Actors</span><span>Subsystems</span></div></li><li><p class=eyebrow>2026-09-05</p><h2><a href="trace-the-column/">A ground trace from above finds the arch, not the ground</a></h2><p>Our generated path climbed over ruined arches. One downward trace returns whatever hangs over the point. The fix traces the whole column and chooses.</p><div class=tags><span>C++</span><span>Collision</span><span>Splines</span></div></li><li><p class=eyebrow>2026-08-28</p><h2><a href="plugin-config-game-ini/">A plugin&#x27;s DefaultGame.ini does not change the project&#x27;s cook list. Config/Game.ini does.</a></h2><p>Our plugin shipped a cook list that Unreal never read. The file name decides whether plugin config changes the host project.</p><div class=tags><span>Plugins</span><span>Packaging</span><span>Config</span></div></li><li><p class=eyebrow>2026-08-23</p><h2><a href="spawnactor-no-root-origin/">SpawnActor ignores your location when the actor has no root component</a></h2><p>A tower appeared inside the wall ring at every Play and sank away. The cause was one SpawnActor call whose location was silently discarded.</p><div class=tags><span>C++</span><span>Actors</span></div></li><li><p class=eyebrow>2026-08-03</p><h2><a href="navmesh-resolution-params/">UE 5.5+: CellSize and AgentMaxStepHeight in the ini do nothing</a></h2><p>The flat RecastNavMesh ini keys are deprecated and silently ignored. Our wall stairs had navmesh holes until we set NavMeshResolutionParams instead.</p><div class=tags><span>Navigation</span><span>Config</span></div></li></ol>
+<p>Citizens find their home and workplace through a small registry: each building type maps to a list of building actors. A citizen never scans the level for its target. It just asks the registry.</p>
+<p><strong>The cause:</strong> the registry lives on <code>UCitizenGeneratorSubsystem</code>, a <code>UWorldSubsystem</code>. That same subsystem spawns the citizens, from its <code>OnWorldBeginPlay</code>:</p>
+<pre><code>void UCitizenGeneratorSubsystem::OnWorldBeginPlay(UWorld&amp; InWorld)
+{
+    Super::OnWorldBeginPlay(InWorld);
+    ...
+    TArray&lt;FInhabitantData&gt; Data = GenerateCitizens(Config-&gt;CitizenCount, Seed, Config-&gt;CultureConfig);
+    SpawnCitizens(Data, Config);
+}</code></pre>
+<p>A world subsystem's <code>OnWorldBeginPlay</code> fires before <code>BeginPlay</code> runs on any actor placed in the level. Buildings normally set themselves up in <code>BeginPlay</code> — that is where actor setup usually goes. But if a building registered itself there, it would still be unregistered at the moment citizens spawn. The registry a fresh citizen queries would be empty, because no building's <code>BeginPlay</code> had run yet.</p>
+<p><strong>The fix:</strong> buildings register in <code>PostInitializeComponents</code> instead, which runs earlier, during actor construction, well before <code>OnWorldBeginPlay</code> fires for anyone:</p>
+<pre><code>void ACitizenBuilding::PostInitializeComponents()
+{
+    Super::PostInitializeComponents();
+    ApplyBuildingTags();
+    GetComponents&lt;UCitizenInteractionSlot&gt;(CachedSlots);
+
+    if (UWorld* W = GetWorld())
+    {
+        if (UCitizenGeneratorSubsystem* Registry = W-&gt;GetSubsystem&lt;UCitizenGeneratorSubsystem&gt;())
+        {
+            Registry-&gt;RegisterBuilding(this);
+        }
+    }
+}</code></pre>
+<p>Unregistering is symmetric, in <code>EndPlay</code>, which is unaffected by this ordering issue:</p>
+<pre><code>void ACitizenBuilding::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    if (UWorld* W = GetWorld())
+    {
+        if (UCitizenGeneratorSubsystem* Registry = W-&gt;GetSubsystem&lt;UCitizenGeneratorSubsystem&gt;())
+        {
+            Registry-&gt;UnregisterBuilding(this);
+        }
+    }
+    Super::EndPlay(EndPlayReason);
+}</code></pre>
+<p>The same function also applies the building's gameplay tags (<code>Home</code>, <code>Tavern</code>, <code>Market</code>, and so on), for the same reason: anything another system reads during or right after <code>OnWorldBeginPlay</code> has to be ready before <code>BeginPlay</code>, not during it.</p>
+<p><strong>How to spot it:</strong> if code inside or triggered by a <code>UWorldSubsystem::OnWorldBeginPlay</code> reads state from a placed actor and gets nothing on the first frame, check where that actor sets the state up. <code>BeginPlay</code> is too late for a world subsystem that acts during its own <code>OnWorldBeginPlay</code>.</p>
+<p><strong>Rule:</strong> anything a world subsystem's <code>OnWorldBeginPlay</code> depends on belongs in the depended-on actor's <code>PostInitializeComponents</code>, not its <code>BeginPlay</code>.</p>
 <div class=cta>
 <p class=eyebrow>Where this came from</p>
 <p>We hit this while building <strong>Medieval Wall Generator</strong>, a UE 5.8 plugin: draw a
