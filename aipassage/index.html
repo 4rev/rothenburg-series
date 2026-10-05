@@ -1,0 +1,2315 @@
+<!doctype html>
+<html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>AI Passage Controller â€” Documentation | Unreal Engine 5 Plugin</title>
+<meta name=description content="Documentation for AI Passage Controller, an Unreal Engine 5.8 plugin: AI characters take turns at doorways, gates and bridges. Install, fastest path, Blueprint and Behavior Tree integration, troubleshooting.">
+<meta property="og:title" content="AI Passage Controller â€” Documentation">
+<meta property="og:description" content="NPCs take turns at doors and bridges instead of jamming. Install, fastest path, integration and troubleshooting. Unreal Engine 5.8 code plugin.">
+<meta property="og:image" content="https://4rev.github.io/rothenburg-series/og.jpg">
+<link rel=preconnect href="https://fonts.googleapis.com">
+<link rel=preconnect href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel=stylesheet>
+<style>
+:root{
+  --paper:#F1F1EE; --ink:#1D2325; --muted:#59646A; --rule:#BCC1BE;
+  --gold:#C79E56; --teal:#1F6455; --panel:#E5E6E1; --code:#20262A;
+  --sans:'Archivo Narrow','Arial Narrow',Arial,sans-serif;
+  --serif:'EB Garamond',Georgia,'Times New Roman',serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
+  font-size:18px;line-height:1.62;-webkit-text-size-adjust:100%}
+.masthead{border-bottom:1px solid var(--rule);background:var(--paper)}
+.masthead .in{max-width:1180px;margin:0 auto;padding:18px 24px;display:flex;
+  align-items:baseline;gap:16px;flex-wrap:wrap}
+.masthead a.home{font-family:var(--sans);text-transform:uppercase;letter-spacing:.14em;
+  font-size:12px;color:var(--muted);text-decoration:none;border-bottom:1px solid transparent}
+.masthead a.home:hover{color:var(--teal);border-bottom-color:var(--teal)}
+.masthead a.buy{font-family:var(--sans);text-transform:uppercase;letter-spacing:.12em;
+  font-size:11px;font-weight:700;text-decoration:none;color:var(--paper);background:var(--teal);
+  padding:7px 13px;border-radius:2px;white-space:nowrap}
+.masthead a.buy:hover{background:var(--ink)}
+.masthead .sheet{margin-left:auto;font-family:var(--sans);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;display:grid;
+  grid-template-columns:232px minmax(0,1fr);gap:52px;align-items:start}
+nav.toc{position:sticky;top:24px;padding:34px 0 40px;font-family:var(--sans);font-size:13.5px;
+  max-height:calc(100vh - 48px);overflow-y:auto}
+nav.toc .hd{text-transform:uppercase;letter-spacing:.16em;font-size:10.5px;color:var(--muted);
+  padding-bottom:9px;margin-bottom:11px;border-bottom:1px solid var(--rule)}
+nav.toc a{display:block;color:var(--muted);text-decoration:none;padding:3px 0;line-height:1.35}
+nav.toc a:hover{color:var(--teal)}
+nav.toc a.l3{padding-left:13px;font-size:12.5px;color:#8C9492}
+main{padding:34px 0 96px;min-width:0}
+h1{font-family:var(--sans);font-weight:700;font-size:42px;line-height:1.08;margin:.1em 0 .1em;
+  letter-spacing:-.01em}
+h1+p{font-size:20px;color:var(--muted);margin-top:.5em}
+h2{font-family:var(--sans);font-weight:600;font-size:26px;margin:2.5em 0 .55em;
+  padding-bottom:.28em;border-bottom:1px solid var(--rule);letter-spacing:-.005em}
+h3{font-family:var(--sans);font-weight:600;font-size:19px;margin:2em 0 .4em;color:var(--teal)}
+h4{font-family:var(--sans);font-weight:600;font-size:16px;margin:1.6em 0 .35em;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+p{margin:.85em 0}
+a{color:var(--teal)}
+strong{font-weight:600}
+hr{border:0;border-top:1px solid var(--rule);margin:2.6em 0}
+ul,ol{margin:.85em 0;padding-left:1.35em}
+li{margin:.34em 0}
+code{font-family:ui-monospace,'Cascadia Mono',Consolas,monospace;font-size:.855em;
+  background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:.06em .35em;
+  white-space:nowrap}
+pre{background:var(--code);color:#DEE3DF;padding:16px 18px;border-radius:4px;overflow-x:auto;
+  font-size:14px;line-height:1.55;margin:1.2em 0}
+pre code{background:none;border:0;padding:0;color:inherit;white-space:pre;font-size:inherit}
+blockquote{margin:1.2em 0;padding:.1em 0 .1em 18px;border-left:3px solid var(--gold);
+  color:var(--muted)}
+.tw{overflow-x:auto;margin:1.3em 0;border:1px solid var(--rule);border-radius:4px;background:#fff}
+table{border-collapse:collapse;width:100%;font-size:15.5px;font-family:var(--sans)}
+th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--rule);vertical-align:top}
+thead th{background:var(--panel);font-weight:600;font-size:12px;text-transform:uppercase;
+  letter-spacing:.09em;color:var(--muted);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td code{white-space:normal}
+footer{border-top:1px solid var(--rule);margin-top:20px;padding:26px 24px 52px;
+  font-family:var(--sans);font-size:12.5px;color:var(--muted)}
+footer .in{max-width:1180px;margin:0 auto;display:flex;gap:18px;flex-wrap:wrap}
+footer a{color:var(--muted)}
+@media(max-width:900px){
+  .wrap{grid-template-columns:1fr;gap:0}
+  nav.toc{position:static;max-height:none;padding:22px 0 6px;
+    border-bottom:1px solid var(--rule);margin-bottom:8px}
+  h1{font-size:33px} body{font-size:17px}
+}
+</style>
+</head>
+<body>
+<header class=masthead><div class=in>
+  <a class=home href="https://4rev.github.io/rothenburg-series/">&#8592; The Rothenburg Series</a>
+  <span class=sheet>AI Passage Controller &middot; Documentation &middot; v1.0.0 &middot; UE 5.8</span>
+</div></header>
+<div class=wrap>
+<nav class=toc><div class=hd>Contents</div>
+<a class="l2" href="#qs">Quick Start</a>
+<a class="l3" href="#qs-1-install">1. Install</a>
+<a class="l3" href="#qs-2-the-fastest-path--five-steps">2. The fastest path — five steps</a>
+<a class="l3" href="#qs-3-see-it-working--the-example-maps">3. See it working — the example maps</a>
+<a class="l3" href="#qs-4-add-it-to-your-own-npc">4. Add it to your own NPC</a>
+<a class="l3" href="#qs-5-four-things-that-are-easy-to-get-wrong">5. Four things that are easy to get wrong</a>
+<a class="l3" href="#qs-6-navigation-prerequisites">6. Navigation prerequisites</a>
+<a class="l3" href="#qs-7-timeouts-are-not-decoration">7. Timeouts are not decoration</a>
+<a class="l3" href="#qs-8-the-example-maps-controls">8. The example maps' controls</a>
+<a class="l3" href="#qs-9-next">9. Next</a>
+<a class="l2" href="#bi">Blueprint Integration</a>
+<a class="l3" href="#bi-1-what-each-side-owns">1. What each side owns</a>
+<a class="l3" href="#bi-2-the-graph-block-by-block">2. The graph, block by block</a>
+<a class="l3" href="#bi-3-what-this-actually-costs-honestly">3. What this actually costs, honestly</a>
+<a class="l3" href="#bi-4-variables-on-the-sample-npc">4. Variables on the sample NPC</a>
+<a class="l3" href="#bi-5-traffic-settings">5. Traffic settings</a>
+<a class="l3" href="#bi-6-availability--a-door-that-opens-and-closes">6. Availability — a door that opens and closes</a>
+<a class="l3" href="#bi-7-optional-and-deliberately-out-of-the-basic-recipe">7. Optional, and deliberately out of the basic recipe</a>
+<a class="l3" href="#bi-8-performance-notes">8. Performance notes</a>
+<a class="l2" href="#ts">Troubleshooting</a>
+<a class="l3" href="#ts-nothing-moves-at-all">Nothing moves at all</a>
+<a class="l3" href="#ts-an-npc-waits-and-never-goes">An NPC waits and never goes</a>
+<a class="l3" href="#ts-an-npc-holds-the-passage-and-never-comes-out">An NPC holds the passage and never comes out</a>
+<a class="l3" href="#ts-an-npc-finished-but-the-passage-still-thinks-it-is-inside">An NPC finished but the passage still thinks it is inside</a>
+<a class="l3" href="#ts-two-npcs-get-wedged-in-the-doorway">Two NPCs get wedged in the doorway</a>
+<a class="l3" href="#ts-an-npc-crossed-the-passage-without-permission">An NPC crossed the passage without permission</a>
+<a class="l3" href="#ts-an-npc-reaches-the-far-side-but-never-reports-exit">An NPC reaches the far side but never reports exit</a>
+<a class="l3" href="#ts-entry-or-completion-is-reported-on-the-wrong-passage">Entry or completion is reported on the wrong passage</a>
+<a class="l3" href="#ts-an-npc-gives-up-as-soon-as-the-queue-moves">An NPC gives up as soon as the queue moves</a>
+<a class="l3" href="#ts-a-request-is-refused-immediately">A request is refused immediately</a>
+<a class="l3" href="#ts-one-way-traffic-refuses-the-side-i-expected">One-way traffic refuses the side I expected</a>
+<a class="l3" href="#ts-the-availability-field-is-greyed-out-during-play">The Availability field is greyed out during Play</a>
+<a class="l3" href="#ts-something-is-physically-blocking-the-doorway">Something is physically blocking the doorway</a>
+<a class="l3" href="#ts-the-passage-is-stuck-blocked-and-nothing-gets-through">The passage is stuck Blocked and nothing gets through</a>
+<a class="l3" href="#ts-ai-passage-navigator-the-npc-walks-straight-past-the-passage-or-move-to-with-passages-returns-false">AI Passage Navigator: the NPC walks straight past the passage, or Move To With Passages returns false</a>
+<a class="l3" href="#ts-ai-passage-navigator-crowds">AI Passage Navigator: crowds</a>
+<a class="l3" href="#ts-a-cancel-from-the-controller-reports-failed-not-cancelled">A cancel from the controller reports Failed, not Cancelled</a>
+<a class="l3" href="#ts-the-plugins-own-tests-report-warnings">The plugin's own tests report warnings</a>
+<a class="l3" href="#ts-nothing-here-matches">Nothing here matches</a>
+</nav>
+<main>
+<h1 id="ai-passage-controller">AI Passage Controller</h1>
+<p>AI characters take turns at doorways, gates and bridges instead of jamming. This page is the documentation that ships inside the plugin's <code>Docs</code> folder.</p>
+<h2 id="qs">AI Passage Controller — Quick Start</h2>
+<p><strong>What it does:</strong> your AI characters take turns at doors, gates, bridges and other narrow
+passages — one at a time (or as many as you allow), in a fair order, from both directions —
+instead of jamming in the opening.</p>
+<p><strong>What it changes in your game:</strong> the passage itself moves nothing. It decides <strong>who may go,
+and when</strong>. The optional <strong>AI Passage Navigator</strong> walks its own NPC through your AI Controller,
+and in a crowd jam it may nudge other NPCs that carry the navigator — never your player and
+never any other character. Your Character, AI Controller and NavMesh stay as they are: you swap
+one move call.</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unreal Engine</td>
+<td>5.8</td>
+</tr>
+<tr>
+<td>Platform</td>
+<td>Windows (Win64) — the platform it is tested on</td>
+</tr>
+<tr>
+<td>Multiplayer</td>
+<td>not tested, not supported in this version</td>
+</tr>
+<tr>
+<td>Navigation</td>
+<td>a NavMesh where the NPCs walk</td>
+</tr>
+<tr>
+<td>NPCs</td>
+<td>Pawns possessed by an AI Controller. The crowd features (step aside, squeeze past) need a Character</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h3 id="qs-1-install">1. Install</h3>
+<p><strong>From Fab (the usual way):</strong></p>
+<ol>
+<li>In the Epic Games Launcher, open your <strong>Fab Library</strong>, find <strong>AI Passage Controller</strong> and
+click <strong>Install to Engine</strong> (5.8).</li>
+<li>Open your project. <strong>Edit → Plugins</strong>, search "AI Passage", tick <strong>AI Passage Controller</strong>,
+and restart the editor.</li>
+<li>In the Content Browser click <strong>Settings</strong> and tick <strong>Show Engine Content</strong> and <strong>Show Plugin
+Content</strong>. The examples are in <strong>AI Passage Controller Content → AIPassageController →
+Examples</strong>.</li>
+</ol>
+<p><strong>From a zip, into one project:</strong> copy the <code>AIPassageController</code> folder into your project's
+<code>Plugins</code> folder and open the project. If Unreal offers to rebuild the plugin, that needs Visual
+Studio with C++; a Blueprint-only project cannot rebuild it — use the Fab install instead.</p>
+<p>Nothing else. No project settings to change, no subsystem to register.</p>
+<hr>
+<h3 id="qs-2-the-fastest-path--five-steps">2. The fastest path — five steps</h3>
+<ol>
+<li>Drag an <strong>AI Passage Controller</strong> into your level, in the middle of the doorway.</li>
+<li>Add a <strong>Trigger Box</strong> that spans the opening, floor to head height. Give it the tag
+<strong><code>AIPassageZone</code></strong>, then in the <strong>Outliner</strong> drag it <strong>onto the controller</strong> (that attaches it).</li>
+<li>On your NPC Blueprint: <strong>Add Component → AI Passage Navigator</strong>.</li>
+<li>Where your NPC calls <strong>Move To Location</strong>, call <strong>Move To With Passages</strong> with the same
+destination.</li>
+<li>Press Play. NPCs whose route goes through that doorway now take turns.</li>
+</ol>
+<p>Your NPC does not move yet? From <strong>Event BeginPlay</strong> call <strong>Move To With Passages</strong>; make the
+destination an <strong>Instance Editable</strong> vector with <strong>Show 3D Widget</strong>, so you can drag each NPC's
+goal in the viewport. The level needs a <strong>NavMesh Bounds Volume</strong> over both sides (in the
+viewport, <strong>Show → Navigation</strong> draws the walkable area green).</p>
+<p>NPCs still walk straight through? Look in the Output Log for <strong>"has no doorway zone"</strong>: step 2 is
+missing a part. Selecting the controller in the editor shows the same thing in red.</p>
+<p>Section 4 explains each step; section 3 shows it working first.</p>
+<hr>
+<h3 id="qs-3-see-it-working--the-example-maps">3. See it working — the example maps</h3>
+<p>Six example maps ship in <strong>Examples → Maps</strong>. Start with the first; the rest are optional.</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Map</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>L_PassageQuickStart</code></td>
+<td>one doorway, six NPCs, every fault key (section 8)</td>
+</tr>
+<tr>
+<td><code>L_PassageSandbox</code></td>
+<td>order a crowd through a doorway yourself; <strong>P</strong> shows it without the plugin</td>
+</tr>
+<tr>
+<td><code>L_PassageVariety</code></td>
+<td>four separate passages: doorway, stairs, raised bridge, blind corner</td>
+</tr>
+<tr>
+<td><code>L_PassageConnected</code></td>
+<td>the same four passages joined into one route; one order crosses several</td>
+</tr>
+<tr>
+<td><code>L_PassageCircuit</code></td>
+<td>96 NPCs in two teams circling the four passages in opposite directions, by themselves; they pass each other on the wide ones</td>
+</tr>
+<tr>
+<td><code>L_PassageNavLink</code></td>
+<td>a crossing on a Nav Link instead of a doorway</td>
+</tr>
+</tbody>
+</table></div>
+<p>Open <strong><code>/AIPassageController/AIPassageController/Examples/Maps/L_PassageQuickStart</code></strong> and press
+Play.</p>
+<p>You get a wall with one doorway 120 cm wide, three NPCs on each side, and an AI Passage
+Controller in the middle. The doorway fits one character and not two, so they cannot solve it
+by squeezing past each other.</p>
+<p>What you should see:</p>
+<ul>
+<li>one NPC goes through at a time;</li>
+<li>the others stand in a line, each in its own spot, not in a heap;</li>
+<li>the line moves up as the front one is let in;</li>
+<li>the direction changes over time, so neither side waits forever;</li>
+<li>an NPC that is through walks off to one side instead of blocking the exit.</li>
+</ul>
+<p>The example has the debug view on, so the passage's live state is drawn over it: the doorway,
+both side markers, each waiting position numbered, and a line to every agent holding
+permission. On a new controller that view is <strong>off</strong> by default.</p>
+<p>Press <strong>2</strong> to block the door and <strong>1</strong> to open it again: nobody scatters, nobody loses their
+place, and when it opens the waiting NPCs go at once — nobody has to ask twice. Every key, and
+seven deliberate failures you can trigger and watch recover, are in <strong>section 8</strong>.</p>
+<h4 id="qs-the-sandbox--order-a-crowd-around">The Sandbox — order a crowd around</h4>
+<p>Open <strong><code>/AIPassageController/AIPassageController/Examples/Maps/L_PassageSandbox</code></strong>. Same
+doorway, twelve NPCs driven only by the <strong>AI Passage Navigator</strong> (section 4.2), no Blueprint
+logic. You give the orders, as in a strategy game: drag a box round the blue NPCs, right-click
+far right, then send the orange ones the other way at the same time. <strong>N</strong> adds NPCs (up to 40).
+The full controls are in section 8.</p>
+<p><strong>Press P to see the problem.</strong> P turns the plugin off for every NPC (a red banner says so):
+orders then use Unreal's plain Move To with RVO avoidance, the way these NPCs would move without
+the plugin. Send the same crowd through the door, watch, then press P again.</p>
+<p>The Sandbox NPCs also chat with each other while they stand about. That is example content
+only, not a plugin feature.</p>
+<h4 id="qs-the-variety-map--stairs-bridge-and-blind-corner">The Variety map — stairs, bridge and blind corner</h4>
+<p>Open <strong><code>/AIPassageController/AIPassageController/Examples/Maps/L_PassageVariety</code></strong> and press Play.
+Four areas share the Sandbox controls and character style: a doorway, stairs with a landing,
+a raised bridge, and an L-shaped corridor. Each starts with three NPCs on each side.</p>
+<p><strong>F1 / F2 / F3 / F4</strong> focuses the doorway / stairs / bridge / corner and selects its six NPCs.
+Press <strong>Space</strong> to send both teams across. After they arrive, press Space again to send them
+back. You can still select individuals or groups and right-click a destination.
+<strong>N</strong> adds NPCs at the stations, up to 48 total. <strong>1 / 2 / 3 affects all four passages</strong>;
+<strong>P</strong> toggles the plain-movement comparison, <strong>R</strong> restarts, and <strong>H</strong> shows or hides the controls.</p>
+<p>These are authored examples on working Unreal navigation. The plugin coordinates permission;
+it does not build or repair stair navigation. Queues stay on the flat areas outside the narrow
+space. Side anchors and final destinations are placed on their correct floor elevations.</p>
+<h4 id="qs-the-connected-map--travel-through-several-passages">The Connected map — travel through several passages</h4>
+<p>Open <strong><code>/AIPassageController/AIPassageController/Examples/Maps/L_PassageConnected</code></strong> and press Play.
+The platforms form one continuous route: <strong>doorway → stairs → raised bridge → blind corner</strong>.
+Every starting platform is reachable from every other platform. Select any NPCs and right-click
+a distant platform: one movement order takes them through the passages along that route.
+The navigator requests each passage in turn; the wide connecting platforms provide waiting space.</p>
+<p>The existing controls still apply. <strong>F1–F4</strong> focuses a passage and selects its original group;
+<strong>Space</strong> sends that group to the other side of its associated passage. For a journey through
+multiple passages, use <strong>right-click on a distant platform</strong>. <strong>N</strong> adds NPCs, <strong>P</strong> compares plain
+movement, and <strong>R</strong> restarts. The isolated Variety map remains available for individual tests.</p>
+<h4 id="qs-the-circuit-map--96-npcs-travelling-in-opposite-directions">The Circuit map — 96 NPCs travelling in opposite directions</h4>
+<p>Open <strong><code>/AIPassageController/AIPassageController/Examples/Maps/L_PassageCircuit</code></strong> and press Play.
+Traffic starts automatically: 48 blue NPCs travel clockwise and 48 orange NPCs counterclockwise.
+Four broad 30 m corner platforms form a loop through a doorway, stairs, bridge and stepped corridor.</p>
+<p>Narrow and wide passages alternate round the loop: a 130 cm doorway and a 130 cm bridge hold one
+NPC, and the teams take turns there. The 280 cm stairs and the 240 cm corridor use the <strong>Two Way</strong>
+policy: each direction has its own lane, 65 cm right of the centre line, and as many NPCs per
+direction as fit in single file along it - 5 on the stairs, 6 in the corridor (<code>Max Concurrent Agents</code>, about one per 120 cm of controlled length) - so the teams pass each other without waiting. With 96 NPCs the lines at the narrow
+passages grow long — up to about 35 waiting — which is the point: that is where taking turns
+matters. The saved arrangement stays the same on restart.</p>
+<p><strong>Space</strong> pauses/resumes circuit orders; NPCs finish their current leg before pausing.
+<strong>F1-F4</strong> focuses the passages and selects their original groups.
+Right-click orders or Stop take selected NPCs out of the circuit; <strong>R</strong> resets everyone.
+<strong>1/2/3</strong> opens/blocks/disables all passages. <strong>P</strong> stops circuit activity and switches to the
+existing manual movement comparison; use <strong>R</strong> to restore the automatic demo.
+<strong>H</strong> toggles help. There are already 96 NPCs, so <strong>N</strong> cannot add more.</p>
+<p>The automatic loop is example game-mode behaviour, not a general patrol system.
+In a crowd a leg can fail (blocked short of the goal); the NPC retries that leg up to three times,
+with a warning in the log each time. A fourth failure in a row stops that NPC's circuit.</p>
+<h4 id="qs-the-nav-link-map">The Nav Link map</h4>
+<p>Open <strong><code>/AIPassageController/AIPassageController/Examples/Maps/L_PassageNavLink</code></strong>. The floor is
+one piece, but its navigation is two islands joined only by a standard <strong>Nav Link Proxy</strong> at a
+crossing marked by two posts, and an AI Passage Controller sits on that crossing. Six NPCs take
+turns through it. It shows the passage working with Unreal's own Nav Link crossings: the plugin
+does not change your Nav Link — it only decides who may use it, and when.</p>
+<hr>
+<h3 id="qs-4-add-it-to-your-own-npc">4. Add it to your own NPC</h3>
+<h4 id="qs-41-place-the-passage-and-its-doorway-box">4.1 Place the passage and its doorway box</h4>
+<ol>
+<li>Drag an <strong>AI Passage Controller</strong> into your level, in the middle of the doorway or bridge.</li>
+<li>Select it. The viewport draws its layout:
+<ul>
+<li>
+<strong>SIDE A</strong> and <strong>SIDE B</strong> rings — the two entrances;</li>
+<li>a <strong>grey arrow</strong> at each waiting line — the direction the LINE EXTENDS, away from the
+passage;</li>
+<li>
+<strong>numbered rings A#0, A#1 …</strong> — the first few waiting positions;</li>
+<li>a <strong>coloured arrow</strong> on each — the direction a waiter will FACE, back towards the door.</li>
+</ul>
+</li>
+<li>Move <code>SideAAnchor</code> and <code>SideBAnchor</code> to the two ends of the narrow space.</li>
+<li>Move <code>QueueAAnchor</code> and <code>QueueBAnchor</code> to where each line should start, and rotate them so
+the grey arrow points AWAY from the passage.</li>
+<li>Add a <strong>Trigger Box</strong> across the opening — floor to head height, the full width of the gap.
+Tag it <strong><code>AIPassageZone</code></strong> (Details → Actor → Tags), then in the <strong>Outliner</strong> drag the box
+<strong>onto the controller</strong>. The box is how entry and exit are seen: the navigator finds a
+passage's doorway by that attachment. Until it is attached, the selected controller shows
+<strong>NO DOORWAY ZONE ATTACHED</strong> in red.</li>
+</ol>
+<p><strong>Put the waiting lines clear of the doorway and clear of the exit lane on the other side.</strong>
+A line that overlaps the opening has people standing in the way of the traffic they are
+waiting for.</p>
+<p>Everything else has a working default.</p>
+<h4 id="qs-42-the-ai-passage-navigator-recommended">4.2 The AI Passage Navigator (recommended)</h4>
+<ol>
+<li>On your NPC Blueprint — your own Character and AI Controller, unchanged — <strong>Add Component →
+AI Passage Navigator</strong>. It adds the AI Passage Agent it needs by itself.</li>
+<li>Where your NPC called <strong>Move To Location</strong>, call <strong>Move To With Passages</strong> with the same
+destination.</li>
+</ol>
+<p>That is the whole integration: <strong>one component and one node</strong>, plus the doorway box from 4.1.</p>
+<p>What the node does for you:</p>
+<ul>
+<li>plans the route once, finds every passage the route crosses, and approaches each one from
+the side the route comes from;</li>
+<li>asks for permission only when the NPC is within <code>Request Distance</code> (600 cm) of the passage,
+or of the end of the line already waiting there, so a unit ordered from across the map does
+not start the reservation timeout early, and a late arrival joins the back of the line;</li>
+<li>waits in its queue place facing the passage, goes through when granted, reports entry and
+exit, then carries on to the destination — through the next door too;</li>
+<li>stops the body and goes back to where it asked from if it loses permission before entering,
+and finishes clearing the opening if it loses it while inside;</li>
+<li>gives its place in line up if its AI Controller goes away — for example an NPC that dies and
+is left lying in the line — so the passage does not wait for a body that will never move.</li>
+</ul>
+<p><strong>Crowds sort themselves out</strong> (<code>Resolve Crowd Jams</code>, on by default). When an NPC is trying to
+move and getting nowhere because bodies are in the way, the NPCs involved agree who makes way:
+one holding a passage's permission never does, an idle one always does, otherwise a fixed
+tie-break. The one making way steps aside — with its neighbours, when they walk the same way —
+waits a moment, and carries on with its own order. Somebody waiting in a line keeps their place;
+the others walk round the line. A step aside never enters a passage's opening. With the debug
+view on you can watch the conversation: <code>"Excuse me"</code>, <code>"After you"</code>, <code>"Let's make room"</code>.</p>
+<p><strong>A line moves up like a wave</strong> (<code>Line Reaction Time</code>, 0.25 s by default). When the front of a
+line moves, each waiter steps up a moment after the one ahead of it — its own random share of
+0.25 s per place — not all at the same instant. 0 turns it off. One given the door goes at once.</p>
+<p><strong>Squeezing past</strong> (<code>Squeeze Through Crowds</code>, on by default, needs a Character). When stepping
+aside has not helped — or at once for an NPC holding a passage's permission — the NPC squeezes
+past, the way people do in a crowd. For about 1.5 s:</p>
+<ul>
+<li>its capsule is 5% narrower and lets other pawns overlap it, so overlap events can fire on
+pawns it brushes;</li>
+<li>its mesh is 5% narrower and 5% taller;</li>
+<li>the bodies round it are kept at least 95% of their summed widths apart. <strong>Only other NPCs that
+carry the navigator and are driven by an AI Controller give way</strong> — and they take the same 5%
+shape for a moment. Your player, any character without the navigator, and an NPC holding a
+passage's permission are never moved, and the squeezer does not push or walk through them.
+Walled in by such bodies, an NPC keeps trying (in our test, still trying after 90 s);</li>
+<li>nobody is pushed into a doorway, off a ledge or through a wall.</li>
+</ul>
+<p>Everything returns to normal afterwards; if your game changed the capsule, its collision or the
+mesh scale in the meantime, your value stays. In our dense-crowd test an NPC got out of a ring
+of 18 standing navigator NPCs in 8.5 s, and the most any of them was moved was 57 cm.</p>
+<p><strong>Use the navigator without Unreal's RVO avoidance</strong> on the same NPCs. With RVO on, the passage
+itself still works — in our two-way test all 32 NPCs crossed with no timeouts — but only 20–27 of
+the 32 then reached their crowded destinations, against 32 of 32 with RVO off: RVO and path
+following fight each other in a packed group. The others were still walking when the test stopped
+at 300 s — their orders had not ended, so <code>On Move Finished</code> had not fired. If you keep RVO, give
+anything that waits for <code>On Move Finished</code> a time limit (in a Behavior Tree, a <strong>Time Limit</strong>
+decorator). Not tested with Detour Crowd.</p>
+<p>An NPC with the navigator but no order of its own may be nudged up to 1.5 m in a jam. Turn
+<code>Resolve Crowd Jams</code> off on NPCs your own AI keeps in place (a guard at a post, a vendor). In a
+corridor about two bodies wide nobody can step aside, and the order fails as it would without
+this.</p>
+<p><strong>Ordering again is safe.</strong> Call <code>Move To With Passages</code> as often as your game likes — every
+click, every squad re-order: while the new route still goes through the same doorway from the
+same side, the NPC <strong>keeps its place in line</strong> (and its permission, if it has one). An order to
+somewhere that no longer needs the doorway gives the place up. For a big group (say 100 units at
+once), give the orders over a few frames — for example 20 per frame: each order plans a route.</p>
+<p>Events on the component:</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Event</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>On Move Finished (Outcome)</code></td>
+<td>once per order: <code>Arrived</code>, <code>Refused</code>, <code>Failed</code> or <code>Stopped</code>. Never from inside the call that gave the order; not at all for an order replaced by a new one</td>
+</tr>
+<tr>
+<td><code>On Obstructing Passage</code></td>
+<td>the body is in an opening <strong>without</strong> permission. Your game decides what the passage does — usually <code>Set Passage Availability (Blocked)</code>, counted as in <code>BLUEPRINT_INTEGRATION.md</code> section 8b</td>
+</tr>
+<tr>
+<td><code>On Obstruction Cleared</code></td>
+<td>that body has left the opening. Nothing is reopened for you</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>Stop Passage Move</code> ends an order (it fires <code>On Move Finished</code> with <code>Stopped</code>) and gives up any
+queue place. Do not issue your own <code>Move To</code> while an order runs; call <code>Stop Passage Move</code> first.</p>
+<p>The navigator plans and walks with your AI Controller's <strong>Default Navigation Filter Class</strong>,
+the same one <code>Move To Location</code> uses. Waiting NPCs turn to the passage through the lowest AI
+focus priority (<code>Default</code>), so a focus your game sets always wins; a Character that turns to
+face its controller (<code>Use Controller Rotation Yaw</code>, or <code>Use Controller Desired Rotation</code>)
+shows it, one that only orients to movement does not.</p>
+<h4 id="qs-43-from-a-behavior-tree-or-a-state-tree">4.3 From a Behavior Tree or a State Tree</h4>
+<p>The built-in <strong>Move To</strong> task cannot call <code>Move To With Passages</code>. The plugin has a Behavior
+Tree task that can.</p>
+<p><strong>Behavior Tree</strong> — add the plugin's task <strong>Move To With Passages</strong> where your tree used
+<strong>Move To</strong> (right-click → Add Task → Move To With Passages). Select it and set its
+<strong>Blackboard Key</strong> to your destination: a Vector key, or an Actor key (the actor's location when
+the task starts; the task does not follow a moving actor). Everything else in the tree stays.
+The pawn needs the AI Passage Navigator (4.2).</p>
+<ul>
+<li>It <strong>succeeds</strong> when the order <code>Arrived</code>. It <strong>fails</strong> when the order ended <code>Refused</code>,
+<code>Failed</code> or <code>Stopped</code>, and at once when the pawn has no navigator, the key holds no location,
+or there is no route.</li>
+<li>When the tree <strong>aborts</strong> it (a higher branch takes over, or the tree stops), it calls
+<code>Stop Passage Move</code>: the NPC gives up its place in line or its reservation.</li>
+<li>We ran it in a Behavior Tree: the NPC asked, crossed and the task succeeded. Stopped while it
+waited in line, the NPC gave its place up and the tree stopped at once.</li>
+</ul>
+<p><strong>Your own Blueprint version</strong> — to change what the task does, build it yourself: a Blueprint
+class based on <strong>BTTask_BlueprintBase</strong>, for example <code>BTT_MoveToWithPassages</code>, with one
+<strong>Blackboard Key Selector</strong> variable <code>Destination</code> (Instance Editable). 26 nodes, counting each
+variable getter; we built it from these steps and ran it in a Behavior Tree, which crossed a
+doorway under control:</p>
+<ol>
+<li>
+<strong>Event Receive Execute AI</strong> → <strong>Get Component by Class</strong> (Controlled Pawn, class <em>AI Passage
+Navigator</em>) → <strong>promote the result to a variable</strong> <code>Navigator</code>. Every later step uses it.</li>
+<li>
+<strong>Bind Event to On Move Finished</strong> on <code>Navigator</code> → a custom event <code>PassageMoveFinished</code>
+(drag from the bind node's red Event pin to create it with the right signature).</li>
+<li>
+<strong>Get Blackboard Value as Vector</strong> (<code>Destination</code>) → <strong>Move To With Passages</strong> on <code>Navigator</code>.</li>
+<li>
+<strong>Branch</strong> on its return value. False (no route, no AI Controller): <strong>Unbind Event from On
+Move Finished</strong> on <code>Navigator</code>, then <strong>Finish Execute</strong> (Success = false).</li>
+<li>
+<code>PassageMoveFinished (Outcome)</code>: <strong>Unbind Event from On Move Finished</strong>, then a <strong>Switch on
+EPassageMoveOutcome</strong>: Arrived → <strong>Finish Execute</strong> (Success = true); every other outcome →
+<strong>Finish Execute</strong> (Success = false).</li>
+<li>
+<strong>Event Receive Abort AI</strong> → <strong>Unbind Event from On Move Finished</strong> → <strong>Stop Passage Move</strong>
+→ <strong>Finish Abort</strong>, all on <code>Navigator</code>. Unbind first: <code>Stop Passage Move</code> fires <code>On Move Finished</code>, and an aborted task must not finish twice.</li>
+</ol>
+<p>In the tree, select the task and set its <strong>Destination</strong> to your blackboard's vector key. Put it
+where your tree used <strong>Move To</strong>. Everything else in the tree stays.</p>
+<p><strong>State Tree</strong> — the same pattern in a <strong>StateTreeTaskBlueprintBase</strong> task: on <strong>Enter State</strong>,
+get the navigator from the context actor, bind <code>On Move Finished</code> and call <code>Move To With Passages</code>; when it fires, unbind and <strong>Finish Task</strong> (Succeeded = Arrived); on <strong>Exit State</strong>,
+unbind and call <code>Stop Passage Move</code> if the order is still running (<code>Is Moving</code>).</p>
+<p>Either way: an order replaced by a new <code>Move To With Passages</code> does not fire <code>On Move Finished</code>,
+so a task that starts a new order must not wait for the old one. (If your game gives the NPC a
+new order while the plugin's task runs, the task ends when that new order ends.) And if your
+NPCs use RVO avoidance, an order in a packed crowd may never end (4.2): put a <strong>Time Limit</strong>
+decorator on the task.</p>
+<h4 id="qs-44-the-long-way--the-recipe-by-hand">4.4 The long way — the recipe by hand</h4>
+<p>Use it instead of the navigator only when you need custom behaviour at a specific step (a
+different retreat spot, an animation before entering, your own obstruction handling inside the
+NPC), or your NPC is not a Pawn with an AI Controller. It uses the <strong>AI Passage Agent</strong>
+component directly: <strong>Add Component → AI Passage Agent</strong>. The component never moves your NPC.</p>
+<p>Open <strong><code>/AIPassageController/AIPassageController/Examples/Blueprints/BP_PassageDemoNPC</code></strong> and
+read its Event Graph. It is meant to be copied into your own graph.</p>
+<p><strong>Be honest about the size of it.</strong> The graph is <strong>214 logic nodes in 13 commented blocks</strong>. Six
+of those blocks are the integration; the rest are the demonstration — the fault scenarios behind
+keys 0 and 4 to 9, and the layout that makes the example readable. A <em>minimal</em> integration really
+is small. A <em>safe</em> one is the six blocks below, and none of them is optional.</p>
+<h5 id="qs-the-six-blocks-that-are-the-integration">The six blocks that are the integration</h5>
+<ol>
+<li>
+<strong>Ask.</strong> Call <code>Request Passage</code> on the component, with the passage and the side you are
+coming from. Choose the side from the route your NPC is walking — do not guess it from
+whichever anchor happens to be nearest.</li>
+<li>
+<strong>Read the refusal properly.</strong> <code>Rejected</code> does <strong>not</strong> always mean nothing was created — see
+4.5. Check <code>Has Active Passage Relationship</code> before you walk away from anything.</li>
+<li>
+<strong>Move when told.</strong> Handle <code>On Queue Slot Changed</code> and <code>On Passage Granted</code>. Both mean "where
+you should be has changed". Both do the same thing: call <code>Get Suggested Movement Target</code> and
+move to the result.</li>
+<li>
+<strong>Report entry and exit from the body, not from a timer.</strong> In the example a trigger volume
+spans the doorway. Begin-overlap reports entry; end-overlap reports exit — and only once the
+capsule is nearer the <strong>far</strong> side, because backing out the way you came is not a traversal.</li>
+<li>
+<strong>Handle losing permission — all four ways of losing it.</strong> <code>On Passage Failed</code> covers the two
+timeouts and invalidation. <strong>Cancellation does not fire it</strong>; it arrives on
+<code>On Passage State Changed</code> as <code>Cancelled</code>. 5.3 is about why skipping that one is dangerous.</li>
+<li>
+<strong>Go somewhere sensible afterwards</strong> — and <em>which</em> somewhere depends on <strong>where the body
+actually is</strong>. Through: a parking spot beyond the passage. Still on the approach side: a
+retreat spot behind it. Standing in the opening: tell your game, then clear the opening.
+5.2 and 5.3 explain why these must never be mixed up.</li>
+</ol>
+<p>Five events and one movement call, plus the branch in 6. That is the whole integration — and
+the branch is the part people leave out.</p>
+<p><strong>When an NPC dies.</strong> If the body stays in the world, call <code>Cancel Current Passage</code> on its
+agent component in your death logic, so its place in line or its permission is released at
+once. A destroyed NPC is cleaned up by itself.</p>
+<h5 id="qs-copying-it-into-an-npc-that-already-has-a-graph">Copying it into an NPC that already has a graph</h5>
+<p>This order was rehearsed on a separate project whose NPC had its own Character, its own AI
+Controller and its own Begin Play route. That NPC's graph went from 7 nodes to 191, and it
+compiled with no errors. Three from each side then crossed under control.</p>
+<ol>
+<li>
+<strong>Add the component and keep its default name, <code>AIPassageAgent</code>.</strong> The pasted events bind to
+that name.</li>
+<li>
+<strong>Create the variables first.</strong> Copy them from <code>BP_PassageDemoNPC</code>'s variable list: the eleven
+in <code>BLUEPRINT_INTEGRATION.md</code> section 4, plus the six demonstration ones. Paste before they
+exist and every getter is an error.</li>
+<li>
+<strong>Select all in the demo's Event Graph, copy, and paste into yours.</strong> Expect errors of the
+form <em>"In use pin … no longer exists on node StartPassage. Please refresh node"</em>. The
+rehearsal got 45 of them. Run <strong>File → Refresh All Nodes</strong>. It clears them and keeps the links.</li>
+<li>
+<strong>If your NPC already has Event BeginPlay, the pasted one is not pasted.</strong> Unreal turns it into
+a custom event named <code>CustomEvent</code> that nothing calls. It compiles, but the NPC never asks
+for the passage and stands still. Connect your own Begin Play to the Branch that reads
+<code>StartOnBeginPlay</code>, at the point where your route used to start walking. Then delete the
+<code>CustomEvent</code> node. The same engine rule applies to Event ActorBeginOverlap and
+ActorEndOverlap if your NPC already handles them: feed block 9 from your existing handler, and
+keep your own initialization and overlap logic.</li>
+<li>
+<strong>Delete block 11's nodes, and keep its six variables.</strong> The comment boxes are headings
+<em>above</em> their blocks, not frames around them. So select the nodes from the heading "11."
+down to the end of the graph, not the box. See <code>BLUEPRINT_INTEGRATION.md</code> section 3 for why
+the variables stay: keep all six, with the five <code>Simulate…</code> flags false.</li>
+<li>
+<strong>Change your route.</strong> Where your NPC used to walk to its destination, it now asks. That old
+destination becomes <code>ParkingSpot</code>. Put <code>RetreatSpot</code> on the NPC's own side.</li>
+<li>
+<strong><code>DemoRecovery</code> is typed to <code>BP_PassageDemoControls</code>.</strong> Retype it to whatever opens and closes
+your doors, and re-point its <code>BeginObstruction</code> and <code>EndObstruction</code> calls. Or leave it empty:
+the NPC still clears the doorway, and only the blocking is skipped.</li>
+<li>Compile, then place the passage and its doorway box (4.1).</li>
+<li>
+<strong>Set the placed NPC instances.</strong> Assign <code>Passage</code>; set <code>EntrySide</code> from each NPC's intended
+route; put <code>ParkingSpot</code> beyond the passage and <code>RetreatSpot</code> safely on its approach side. Set
+<code>StartOnBeginPlay</code> true for this first test, or call <code>StartPassage</code> from your route logic.
+Connect <code>DemoRecovery</code> to your obstruction handling if you use block 8. Confirm the copied
+defaults, including <code>MaxIdleRedrives = 6</code> and all five <code>Simulate…</code> flags false.</li>
+</ol>
+<h4 id="qs-45-two-things-that-will-bite-you-on-the-long-way">4.5 Two things that will bite you on the long way</h4>
+<p><strong>Bind before you ask.</strong> <code>Request Passage</code> answers immediately, and if the way is clear it fires
+<code>On Passage Granted</code> <strong>before it returns</strong>. A handler bound afterwards misses the grant. Events
+added to a component in a Blueprint are bound before Begin Play, so the example is safe; code
+that binds by hand must bind first.</p>
+<p><strong>Do not move on both.</strong> Because the grant event has already fired, the <code>Granted</code> return value
+needs no movement of its own. Use the events to drive movement, and the return value only to
+notice that you were refused.</p>
+<p><strong><code>Rejected</code> does not always mean "nothing was created".</strong> It has two causes and they need
+opposite responses:</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Why it was rejected</th>
+<th>What exists afterwards</th>
+<th>What you must do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A <strong>fresh</strong> request was turned away</td>
+<td>nothing</td>
+<td>go somewhere else</td>
+</tr>
+<tr>
+<td>You asked for a <strong>second</strong> passage, or the <strong>opposite side</strong> of the one you are already using</td>
+<td><strong>the original relationship, untouched</strong></td>
+<td>
+<strong>nothing.</strong> Carry on with it.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Walk away in the second case and you abandon a reservation the passage is still counting, and
+strand everybody queued behind you. The only safe test is to ask
+<code>Has Active Passage Relationship</code> after the call. <code>Unavailable</code> and <code>Invalid</code> do always mean
+nothing was created.</p>
+<hr>
+<h3 id="qs-5-four-things-that-are-easy-to-get-wrong">5. Four things that are easy to get wrong</h3>
+<h4 id="qs-51-exit-means-the-body-is-clear">5.1 Exit means the body is clear</h4>
+<p>Report exit when the capsule has left the opening, not when it has reached a point on the far
+side. An NPC's origin can pass the goal while its back half is still filling the gap; hand the
+next agent a doorway in that state and they collide in it.</p>
+<p>The example reports exit from the <strong>end</strong> of the overlap with the doorway volume. A <code>Delay</code> node
+cannot do this — a delay is a guess.</p>
+<p><strong>Leave room between the far anchor and the volume.</strong> A move finishes once the pawn is within
+its acceptance radius <em>plus its own radius</em> of the goal. If that stopping point is not
+comfortably past the point where the volume releases, the NPC halts while still overlapping and
+never reports exit at all — it then holds the passage until the traversal timeout. With a
+margin of two centimetres, half the NPCs in our tests did exactly that.</p>
+<h4 id="qs-52-a-refused-npc-must-not-walk-to-the-far-side">5.2 A refused NPC must not walk to the far side</h4>
+<p>This one is not obvious and it matters.</p>
+<p>If an NPC is refused, or loses its reservation before getting in, and you then send it to a
+destination <strong>beyond the passage</strong>, navigation will happily route it through the doorway it was
+just refused — with no permission, possibly into oncoming traffic.</p>
+<p><strong>The passage cannot stop that.</strong> It controls permission, not collision. Nothing in the plugin
+can prevent a body that simply walks through.</p>
+<p>So the sample keeps two destinations and never mixes them:</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Used when</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ParkingSpot</code></td>
+<td>it actually came through, or is inside and must finish clearing</td>
+<td>beyond the passage</td>
+</tr>
+<tr>
+<td><code>RetreatSpot</code></td>
+<td>refused, or lost the reservation while still on the approach side</td>
+<td>the side it approached from</td>
+</tr>
+</tbody>
+</table></div>
+<p>The navigator (4.2) does this for you.</p>
+<h4 id="qs-53-losing-permission-does-not-stop-the-body--you-have-to">5.3 Losing permission does not stop the body — you have to</h4>
+<p>This is the one that costs people a bug report.</p>
+<p><code>Cancel Current Passage</code> takes the <strong>permission</strong> away. The <code>Move To</code> you issued earlier is
+still running. Cancel an NPC that is walking towards the doorway and it keeps walking, straight
+through the opening it no longer has any right to use, while its own state reads <code>Cancelled</code>.</p>
+<p>Measured in our tests: cancelled at x = −950 cm, observed inside the doorway with no permission,
+and out the far side at x = +183 cm.</p>
+<p><strong>Cancellation is not a failure event.</strong> The component deliberately does not fire
+<code>On Passage Failed</code> for it — you asked for it, so you already know. It arrives on
+<code>On Passage State Changed</code> with <code>NewState = Cancelled</code>, and if nothing is listening there,
+nothing stops the body.</p>
+<p>So the sample sends <strong>every</strong> way of losing permission — refusal, cancellation, reservation
+timeout, traversal timeout — to one handler, which does three things in this order:</p>
+<ol>
+<li>
+<strong>Stop the current movement.</strong> Everything decided afterwards is worthless while an old move
+order is still carrying the NPC somewhere else.</li>
+<li>
+<strong>Ask where the body actually is</strong> — <code>Is Overlapping Actor</code> against the doorway volume it
+remembered when it first touched it. Not a flag.</li>
+<li>
+<strong>Then</strong> choose: in the opening → tell the game and finish clearing; already across → carry
+on to parking; still on the approach side → retreat.</li>
+</ol>
+<p><strong>Do not use a "did I report entry" flag for step 2.</strong> The sample keeps one, <code>ReportedInside</code>,
+and deliberately does not decide on it. It records what the passage was <strong>told</strong>, which after a
+missed exit report or an entry-side retreat is exactly the thing that is wrong. Reversing an
+NPC that is already across walks it back through the doorway with no permission — the same bug,
+pointing the other way.</p>
+<h4 id="qs-54-clearing-an-obstruction-is-not-permission-to-reopen">5.4 Clearing an obstruction is not permission to reopen</h4>
+<p>When a body is stranded in the doorway, something has to shut the passage until it is clear —
+see section 7. The tempting next step is to reopen it once the body is out. <strong>Do not infer that
+you are allowed to.</strong></p>
+<p>A flag saying "I was the one who blocked this", plus a check that the passage still reads
+<code>Blocked</code>, is not ownership. <strong>An enum value cannot say who set it.</strong> Another system asking for
+<code>Blocked</code>, or a <code>Disabled</code> that somebody later changed to <code>Blocked</code>, look exactly the same from
+inside your recovery.</p>
+<p>Measured, with a real body timing out in the doorway and the game then making its own decision:</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Game's decision, made while the body was stuck</th>
+<th>At real capsule clearance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Disabled</code></td>
+<td>held correctly</td>
+</tr>
+<tr>
+<td><code>Blocked</code></td>
+<td><strong>overwritten to <code>Available</code>, and a fresh NPC admitted</strong></td>
+</tr>
+<tr>
+<td>
+<code>Disabled</code>, then <code>Blocked</code>
+</td>
+<td><strong>overwritten to <code>Available</code>, and a fresh NPC admitted</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>It was also nearly invisible. Checking at the moment of clearance <strong>passed</strong>, because the NPC
+admitted through the reopened doorway timed out a moment later and set <code>Blocked</code> again.</p>
+<p>So the sample announces the clearance and <strong>stops</strong>. Reopening is an explicit decision — key
+1 in the example, <code>Set Passage Availability</code> in your game. Leaving a passage shut is always safe;
+reopening one is a decision about the whole game.</p>
+<hr>
+<h3 id="qs-6-navigation-prerequisites">6. Navigation prerequisites</h3>
+<p>The plugin needs none. Your project does:</p>
+<ul>
+<li>a <strong>NavMesh Bounds Volume</strong> covering the area, and navigation built;</li>
+<li>your NPC reachable from its waiting position, and the far side reachable from the doorway;</li>
+<li>an <strong>AI Controller</strong> possessing the pawn. On a Character Blueprint set <strong>Auto Possess AI</strong> to
+<strong>Placed in World or Spawned</strong> — "Placed in World" alone silently skips anything spawned at
+runtime, and then nothing moves at all.</li>
+</ul>
+<p>A waiting position that lands off the NavMesh is an authoring problem. The passage computes
+where people should stand from the anchor you placed; it does not check that the spot is
+walkable. The navigator reports a waiting place it cannot reach in the log.</p>
+<hr>
+<h3 id="qs-7-timeouts-are-not-decoration">7. Timeouts are not decoration</h3>
+<p>Two settings on the controller decide how it recovers from an NPC that stops cooperating:</p>
+<ul>
+<li>
+<strong>Reservation Timeout Seconds</strong> (default 15) — permission was given and the NPC never arrived.</li>
+<li>
+<strong>Traversal Timeout Seconds</strong> (default 20) — it got inside and never came out. On a long
+bridge or corridor, make it longer than the slowest NPC needs to cross.</li>
+</ul>
+<p><strong>Setting either to 0 disables that timeout.</strong> An NPC that then stalls holds the passage
+forever and everybody behind it waits forever. Leave them on unless you have a specific reason.</p>
+<p>Queueing itself has no timeout. A queued agent waits until it is granted, cancelled or
+destroyed (a navigator NPC also gives its place up when its AI Controller goes away).</p>
+<p><strong>A timeout reclaims permission, not space.</strong> It takes the reservation back so the queue can
+move; it cannot move a body. If the NPC that timed out is still standing in the opening, the
+passage will hand permission to the next agent and they will walk into it. Deciding what to do
+about that is your game's job — <code>BP_PassageDemoControls</code> shows one way, and key <strong>8</strong> runs it.</p>
+<hr>
+<h3 id="qs-8-the-example-maps-controls">8. The example maps' controls</h3>
+<h4 id="qs-moving-the-camera">Moving the camera</h4>
+<p>It flies <strong>like an editor viewport</strong>. You start looking down at the doorway from one corner,
+with both queues, both approaches and the doorway all in frame.</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Control</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>hold right mouse</strong></td>
+<td>look around. The cursor disappears while you hold it.</td>
+</tr>
+<tr>
+<td>
+<strong>W A S D</strong> (while looking)</td>
+<td>forward, left, back, right</td>
+</tr>
+<tr>
+<td>
+<strong>E</strong> / <strong>Q</strong> (while looking)</td>
+<td>straight up / straight down</td>
+</tr>
+<tr>
+<td>
+<strong>SHIFT</strong> (while looking)</td>
+<td>three times faster</td>
+</tr>
+<tr>
+<td>
+<strong>mouse wheel</strong> (while looking)</td>
+<td>faster / slower</td>
+</tr>
+<tr>
+<td>
+<strong>mouse wheel</strong> (cursor free)</td>
+<td>dolly forward / back</td>
+</tr>
+</tbody>
+</table></div>
+<p>Movement needs the right button held, exactly as the editor does. With the button up the
+keyboard belongs to the demo keys below, so pressing <strong>2</strong> blocks the passage instead of
+flying you sideways.</p>
+<h4 id="qs-reading-the-state-point-at-it">Reading the state: point at it</h4>
+<p><strong>The example has one panel in the top-left</strong>, in four parts:</p>
+<ul>
+<li>
+<strong>LIVE</strong> — each passage's state in words and colour, flow direction, permission used, both
+queue lengths, <code>DRAINING</code> when it is emptying on purpose, and running counts: crossed,
+average wait, timeouts, gave up.</li>
+<li>
+<strong>POINTING AT</strong> — the words for the one thing the mouse is pointing at. Nothing pointed at,
+nothing shown.</li>
+<li>
+<strong>EVENTS</strong> — what the demo keys just did, newest first, fading after a few seconds.</li>
+<li>
+<strong>CONTROLS</strong> — every key. It folds to one line after 25 seconds; <strong>H</strong> opens and closes it.</li>
+</ul>
+<p>Over the NPCs themselves, a speech bubble pops up for 2.5 seconds whenever one changes state:
+<code>Waiting (#2)</code>, <code>My turn!</code>, <code>Going through</code>, <code>Through!</code>, <code>Refused - out of service</code>.</p>
+<p>The panel belongs to the example's game mode, not to the plugin. In your own game the
+passage's hover words appear in the engine's top-left debug text instead — and only while a
+mouse cursor is visible. <strong>A game that hides the cursor (most first- and third-person games)
+should set <code>Debug Text</code> to Always</strong>; the log says so if the cursor stays hidden. While an
+example map plays, the panel shows on-screen messages itself: your Print String lines appear in
+EVENTS, and other on-screen debug text is hidden until Play stops.</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Point at</th>
+<th>What you get</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>the doorway, or either side marker</td>
+<td>availability in words, reservations, both queue lengths, direction, policy, and why it is holding back if it is</td>
+</tr>
+<tr>
+<td>a numbered waiting slot, or the NPC standing in it</td>
+<td>who is waiting there, which side, and their place in the line</td>
+</tr>
+<tr>
+<td>an NPC that holds permission</td>
+<td>that it is using the passage, and which phase it has reported</td>
+</tr>
+</tbody>
+</table></div>
+<p>Nothing appears while you hold the right mouse button: the cursor is captured for looking, so
+you are not pointing at anything.</p>
+<p>This is the <code>Debug Text</code> setting on the controller. <strong>Always</strong> floats every label in the world
+instead — readable on a small scene, crowded on a busy one — and <strong>Off</strong> draws shapes only.</p>
+<h4 id="qs-the-availability-keys">The availability keys</h4>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Key</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>2</strong></td>
+<td>
+<strong>Blocked.</strong> Watch what does <em>not</em> happen: nobody scatters, nobody loses their place in the line, and nobody new is let in.</td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td>
+<strong>Available</strong> again. The waiting agents set off immediately — with <strong>no new request from them</strong>. Your code does not have to keep asking, and nobody has to ask twice.</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>
+<strong>Disabled.</strong> The existing queue is kept; only <em>fresh</em> requests are turned away.</td>
+</tr>
+<tr>
+<td><strong>H</strong></td>
+<td>Opens or closes the CONTROLS list in the panel, including the failure keys below.</td>
+</tr>
+</tbody>
+</table></div>
+<p>That difference between Blocked and Disabled is the whole reason they are separate states, and
+it is much easier to see than to read about.</p>
+<h4 id="qs-the-failure-keys-quick-start-map">The failure keys (Quick Start map)</h4>
+<p>The interesting behaviour is not the happy path. Keys <strong>0</strong> and <strong>4–8</strong> each break one thing on
+<strong>NPC_A1</strong>, key <strong>9</strong> uses <strong>NPC_Latecomer</strong>, and each prints what should happen next — so you
+can watch the recovery instead of waiting for one to occur by accident.</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Key</th>
+<th>What it breaks</th>
+<th>What you should see</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td>The NPC is granted permission and <strong>never walks to it</strong>
+</td>
+<td>The reservation times out with the body still on its own side, so it <strong>retreats</strong>. It never reaches the doorway.</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>It crosses but never <strong>reports entry</strong>
+</td>
+<td>It keeps its permission the whole way, so the crossing is authorised. The reservation times out — and because the body is <strong>already across</strong>, it carries on to Parking.</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td>It gets through and never <strong>reports exit</strong>
+</td>
+<td>The traversal times out over an <strong>empty</strong> doorway. The passage is <strong>not</strong> blocked: nothing is in the way.</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td>The NPC is <strong>destroyed</strong> where it stands</td>
+<td>Its reservation or queue place is cleaned up and the agents behind it keep moving.</td>
+</tr>
+<tr>
+<td><strong>7</strong></td>
+<td>Its next move is sent somewhere <strong>unreachable</strong>
+</td>
+<td>
+<code>Move To Location</code> answers <code>Failed</code> <strong>at once</strong>. It gives its place up and retreats. No retry loop, no slow walk to nowhere.</td>
+</tr>
+<tr>
+<td><strong>8</strong></td>
+<td>It <strong>stops dead inside</strong> the doorway</td>
+<td>The traversal times out with a real body in the opening, so the demo blocks the passage. When the body is clear the demo <strong>says so and stops</strong> — press <strong>1</strong> to reopen.</td>
+</tr>
+<tr>
+<td><strong>9</strong></td>
+<td>
+<strong>Disabled</strong>, then a <strong>fresh</strong> request from NPC_Latecomer</td>
+<td>Refused with <code>Unavailable</code>, creating nothing at all. The five agents already queued keep their places.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Keys 0 and 4 look similar and are opposites.</strong> Key 0 suppresses the <em>movement</em>, so the body is
+still on its own side when the reservation expires and retreating is right. Key 4 suppresses the
+<em>notification</em>, so the body is already across and retreating would walk it back through the
+doorway unpermitted. Recovery measures where the body is; it does not read a flag.</p>
+<p><strong>Key 8 requires a separate reopening decision.</strong> Nothing in the plugin can move a stuck body — a
+reservation timeout reclaims <em>permission</em>, not <em>space</em>. And notice what the demo does <strong>not</strong> do
+when the body finally clears: it does not reopen. It cannot tell whether the closure standing in
+front of it is still its own, so it hands that decision back to you. 5.4 explains why that
+matters.</p>
+<p><strong>Key 9 needs its own NPC.</strong> <code>NPC_Latecomer</code> stands on side A with <strong>Start On Begin Play</strong> off
+and asks for nothing until key 9 tells it to. A request from one of the six busy NPCs would be
+refused for a completely different reason — see 4.5.</p>
+<p>All of them are plain Blueprint events on <code>BP_PassageDemoControls</code>, so your own game logic or a
+test can call them without a key press.</p>
+<p><strong>Start a fresh Play session for each fault scenario</strong> (or press <strong>R</strong>, which restarts the map).
+For keys <strong>0, 4, 5 and 8</strong>, press within <strong>two seconds of game time</strong> after the start: NPC_A1 must
+still be on its approach side, outside the doorway, when the SCENARIO message appears. If it is
+already entering or across, restart and retry. The NPC reaches the doorway at about 3.6
+seconds; waiting five seconds is too late — the panel counts the window down for you. Keys <strong>6
+and 7</strong> also need NPC_A1 to still be queued or moving. For key <strong>8</strong>, wait for the clearance
+announcement, then press <strong>1</strong> to reopen. The <code>Simulate…</code> switches stay set for the rest of the
+session once armed, on purpose: a fault you have to catch twice is not a demonstration.</p>
+<h4 id="qs-the-sandbox-controls">The Sandbox controls</h4>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Control</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<strong>click</strong> an NPC</td>
+<td>selects it and opens its menu: <em>Go through the door</em>, <em>Stop</em>, <em>Remove</em>
+</td>
+</tr>
+<tr>
+<td>
+<strong>drag</strong> a box</td>
+<td>selects a group (the menu opens for all of them)</td>
+</tr>
+<tr>
+<td><strong>Shift + click</strong></td>
+<td>adds to / removes from the selection</td>
+</tr>
+<tr>
+<td>
+<strong>right click</strong> the ground</td>
+<td>sends the selection there, spread out, through the door if needed</td>
+</tr>
+<tr>
+<td><strong>hold right mouse</strong></td>
+<td>looks around, as everywhere else</td>
+</tr>
+<tr>
+<td><strong>1 / 2 / 3</strong></td>
+<td>open / block / disable the door</td>
+</tr>
+<tr>
+<td><strong>N</strong></td>
+<td>two more NPCs per side (up to 40)</td>
+</tr>
+<tr>
+<td><strong>P</strong></td>
+<td>plugin off / on: the same crowd with Unreal's plain Move To and RVO avoidance</td>
+</tr>
+<tr>
+<td><strong>R</strong></td>
+<td>restart</td>
+</tr>
+</tbody>
+</table></div>
+<p>Click one NPC while it waits: its menu says which place in line it holds.</p>
+<h4 id="qs-measurements-in-the-example-for-reference">Measurements in the example, for reference</h4>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Thing</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Doorway width</td>
+<td>120 cm</td>
+</tr>
+<tr>
+<td>Character capsule</td>
+<td>34 cm radius, 88 cm half height (Unreal's default)</td>
+</tr>
+<tr>
+<td>Doorway trigger</td>
+<td>180 × 120 × 400 cm, spanning the opening</td>
+</tr>
+<tr>
+<td>Far-side anchor</td>
+<td>360 cm from the doorway centre</td>
+</tr>
+<tr>
+<td>Exit clearance margin</td>
+<td>142 cm between "clear of the volume" and "arrived at the anchor"</td>
+</tr>
+<tr>
+<td>MoveTo acceptance radius</td>
+<td>60 cm</td>
+</tr>
+<tr>
+<td>Waiting position spacing</td>
+<td>160 cm</td>
+</tr>
+<tr>
+<td>NPCs that cross</td>
+<td>6, three per side, plus 1 latecomer that only key 9 uses</td>
+</tr>
+<tr>
+<td>
+<code>BP_PassageDemoNPC</code> graph</td>
+<td>214 logic nodes, 13 comment blocks</td>
+</tr>
+<tr>
+<td>
+<code>BP_PassageDemoControls</code> graph</td>
+<td>96 logic nodes, 3 comment blocks</td>
+</tr>
+</tbody>
+</table></div>
+<p>The two node counts are counted from the shipped assets by an automated test. If they ever
+disagree with what you see, believe the asset.</p>
+<hr>
+<h3 id="qs-9-next">9. Next</h3>
+<ul>
+<li>
+<code>BLUEPRINT_INTEGRATION.md</code> — the recipe node by node, and the optional parts.</li>
+<li>
+<code>TROUBLESHOOTING.md</code> — what to check when something does not behave.</li>
+</ul>
+
+<hr>
+<h2 id="bi">Blueprint Integration</h2>
+<p>The recipe from <code>QUICK_START.md</code>, in detail. Read the graph in
+<code>/AIPassageController/AIPassageController/Examples/Blueprints/BP_PassageDemoNPC</code> alongside this — the comment
+blocks there are numbered to match the sections below.</p>
+<p><strong>Scope of this page:</strong> the normal workflow. Everything advanced is in section 7, deliberately
+after the point where you already have something working.</p>
+<p><strong>Want it without the graph?</strong> The <strong>AI Passage Navigator</strong> component runs blocks 1–10 of this
+page in C++: add it and call <code>Move To With Passages</code> instead of <code>Move To Location</code>
+(<code>QUICK_START.md</code>, "The short way"). Block 8's <em>report</em> becomes its <code>On Obstructing Passage</code>
+event; what the game does about it is still yours, exactly as in 8b. Read on when you need to
+change a step.</p>
+<hr>
+<h3 id="bi-1-what-each-side-owns">1. What each side owns</h3>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Owner</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AI Passage Controller</strong></td>
+<td>who may enter, in what order, in which direction, and taking back permission that was abandoned</td>
+</tr>
+<tr>
+<td>
+<strong>AI Passage Agent</strong> (on your NPC)</td>
+<td>one NPC's relationship with one passage, and answering "where should I go now"</td>
+</tr>
+<tr>
+<td><strong>Your AI</strong></td>
+<td>actually walking there</td>
+</tr>
+</tbody>
+</table></div>
+<p>The plugin never calls MoveTo. That is not a limitation to work around, it is the reason the
+component drops into an existing project without changing anything.</p>
+<p>It also does not intercept your existing MoveTo calls. <strong>A passage request is something your
+route asks for explicitly.</strong> If your NPC walks through a door without asking, the passage does
+not know it is there.</p>
+<hr>
+<h3 id="bi-2-the-graph-block-by-block">2. The graph, block by block</h3>
+<h4 id="bi-block-1--ask">Block 1 — Ask</h4>
+<pre><code>Event BeginPlay ──▶ Branch (StartOnBeginPlay) ──▶ StartPassage
+
+StartPassage ──▶ AIPassageAgent ▸ Request Passage (Passage, FromSide)
+                        │
+                        └─▶ Switch on EPassageRequestResult
+                                Granted      ─ (nothing: the event already ran)
+                                Queued       ─ (nothing: the slot event already ran)
+                                Rejected     ─┐
+                                Unavailable  ─┼─▶ HandleRefusal
+                                Invalid      ─┤
+                                Cancelled    ─┘
+</code></pre>
+<p><strong>Choose <code>FromSide</code> from the route the NPC is walking.</strong> Not from the nearest anchor: an NPC
+approaching diagonally can be nearest the wrong end, and the passage will then plan its
+traversal in the wrong direction.</p>
+<p>The Granted and Queued branches are deliberately empty. <code>Request Passage</code> broadcasts
+<code>On Passage Granted</code> or <code>On Queue Slot Changed</code> <strong>before it returns</strong>, so movement has already
+started. Adding a MoveTo here as well sends two move orders for one instruction, and the second
+cancels the first.</p>
+<h4 id="bi-block-2--a-refusal-is-not-always-a-loss">Block 2 — A refusal is not always a loss</h4>
+<p>This distinction matters, and it is easy to get wrong.</p>
+<p><code>Rejected</code> has <strong>two</strong> causes that need opposite responses:</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Cause</th>
+<th>What survives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A <strong>fresh</strong> request was turned away (One Way from the forbidden side)</td>
+<td>nothing at all — no queue entry, no reservation, no reference</td>
+</tr>
+<tr>
+<td>A <strong>second</strong> request while a relationship is already live — a different passage, or the opposite side of the same one</td>
+<td><strong>the original relationship is untouched and still running</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><code>Unavailable</code> and <code>Invalid</code> behave like the first row. But because the second row exists, the
+only safe test is whether a relationship survived the call:</p>
+<pre><code>HandleRefusal ──▶ Branch (AIPassageAgent ▸ Has Active Passage Relationship)
+                     True  ─ (nothing: an earlier relationship is still live)
+                     False ─▶ RetreatToApproachSide
+</code></pre>
+<p>Walking away in the second case would abandon a reservation the passage is still counting and
+strand everybody queued behind it.</p>
+<p>None of these results is a retry hint. Where nothing was created, send the NPC somewhere else;
+do not retry in a loop.</p>
+<h4 id="bi-block-3--move-whenever-the-passage-says-so">Block 3 — Move whenever the passage says so</h4>
+<pre><code>On Passage Granted     ──▶ DriveToCurrentTarget
+On Queue Slot Changed  ──▶ DriveToCurrentTarget
+</code></pre>
+<p>Both events mean the same thing: <em>where you should be has changed</em>. Handling them identically
+is what keeps the graph small.</p>
+<p><code>On Queue Slot Changed</code> fires when the NPC first gets a place in the line and every time its
+position in that line changes. It does <strong>not</strong> fire because the passage actor was moved — the
+positions are computed when you ask, so re-read them if your door itself moves.</p>
+<h4 id="bi-block-4--ask-where-to-go-then-go-no-completion-callback">Block 4 — Ask where to go, then go. No completion callback.</h4>
+<pre><code>DriveToCurrentTarget ──▶ AIPassageAgent ▸ Get Suggested Movement Target
+                              │
+                              └─▶ Branch ──▶ Get AI Controller ▸ Move To Location
+                                                  │
+                                                  └─▶ Switch on result
+                                                          Failed ──▶ HandleUnreachableTarget
+                                                          (others: nothing)
+</code></pre>
+<p><code>Get Suggested Movement Target</code> answers for whatever the NPC is doing right now:</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>State</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Queued</td>
+<td>that NPC's own waiting position</td>
+</tr>
+<tr>
+<td>Reserved / Entering / Traversing / Exiting</td>
+<td>the anchor on the far side</td>
+</tr>
+<tr>
+<td>anything else</td>
+<td>nothing, and it returns false</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Never cache it.</strong></p>
+<p><strong>This graph does not subscribe to move completion, and that is deliberate.</strong></p>
+<p>When the queue shuffles forward, the previous move is cancelled and reports failure a moment
+later. A handler cannot tell that obsolete report apart from a current one, because <strong>Blueprint
+has no way to compare AI move-request identity</strong> — the id inside <code>FAIRequestID</code> is a private
+property with no Blueprint accessor, and <code>GetCurrentMoveRequestID</code> is not exposed at all. Any
+handler would be guessing, and a wrong guess cancels a reservation the NPC is actively using.</p>
+<p>Listening to nothing is the only answer that is always right.</p>
+<p>A route that genuinely cannot be walked is caught at <strong>issue</strong> time instead, from
+<code>Move To Location</code>'s immediate <code>Failed</code> result — once, with no counter and no retry budget.</p>
+<h4 id="bi-block-4b--a-movement-check-bound-to-the-work">Block 4b — A movement check, bound to the work</h4>
+<pre><code>ArmMovementCheck    ──▶ Set Timer by Function Name ("KeepMoving", 0.5s, looping)   -- from block 4
+DisarmMovementCheck ──▶ Clear Timer by Function Name ("KeepMoving")
+
+KeepMoving (every 0.5s)
+   └─▶ Branch (Has Active Passage Relationship)
+          False ──▶ DisarmMovementCheck
+          True  ──▶ Get AI Controller ▸ Get Move Status
+                       Moving ──▶ IdleRedriveCount = 0
+                       Idle   ──▶ IdleRedriveCount + 1
+                                    └─▶ Branch (&gt; MaxIdleRedrives)
+                                           True  ──▶ HandleUnreachableTarget
+                                           False ──▶ DriveToCurrentTarget
+</code></pre>
+<p>A move can still be abandoned without anyone being told: another agent bumps this one, the path
+is rebuilt, the request is aborted. With no completion callback there is nothing to notice that.</p>
+<p>So while this NPC owns a relationship, twice a second: if its controller has gone idle, ask
+where to go and set off again. Already at the goal answers <code>AlreadyAtGoal</code> and costs nothing.</p>
+<blockquote>
+<p>This matters in practice, not just in theory. Without it, measured, NPCs stopped one
+centimetre short of clearing the doorway and sat there for the full traversal timeout.</p>
+</blockquote>
+<p><strong>This is not a retry loop, and three things keep it from becoming one:</strong></p>
+<ul>
+<li>it is <strong>armed in block 4</strong>, when the passage first gives this NPC somewhere to be — not on
+Begin Play. An NPC with nothing to do is not polling;</li>
+<li>it <strong>clears itself</strong> the moment the relationship ends, and both destinations in block 6 clear
+it too;</li>
+<li>it <strong>gives up</strong>. <code>MaxIdleRedrives</code> re-drives that all end idle is not a slow route, it is a
+route that is not going to be walked, and block 5 deals with it.</li>
+</ul>
+<p><strong>Standing still is not being stuck.</strong> A re-drive that answers <code>AlreadyAtGoal</code> resets the
+counter, because an NPC waiting in its own queue slot is idle every single time this looks at
+it — and it is idle because it is doing exactly what it was told. Measured, without that reset:
+every queued NPC counted six idle polls of correct waiting, decided its route was unwalkable,
+and cancelled. All three NPCs on the second side ended up back at their retreat spots having
+never entered the doorway once.</p>
+<h4 id="bi-block-5--a-route-that-cannot-be-walked">Block 5 — A route that cannot be walked</h4>
+<pre><code>HandleUnreachableTarget ──▶ Is Overlapping Actor (PassageZone)?
+                               True  ──▶ ReportObstruction            -- block 8
+                               False ──▶ Cancel Current Passage       -- block 7b does the rest
+</code></pre>
+<p><code>Move To Location</code> answers <code>Failed</code> immediately, so this is decided once. It is also where
+block 4b ends up when a move has stopped making progress.</p>
+<p><strong><code>bAllowPartialPath</code> is off on the passage move.</strong> Left at the engine default it is on, and
+navigation then accepts a route that stops short and answers <code>RequestSuccessful</code> — so an
+unreachable target looks exactly like a reachable one and the NPC walks confidently to nowhere
+with nothing to report.</p>
+<p><strong>Where the body is decides what happens.</strong> The simple design cancels and retreats here
+regardless. That is right for an NPC that never got in — it gives its place up so everybody
+behind it moves, and goes back the way it came. It is wrong for an NPC standing in the opening:
+reversing drags a body back through the doorway the wrong way, into oncoming traffic, with no
+permission.</p>
+<p>Notice what the <code>False</code> branch does <strong>not</strong> do: it does not also issue a retreat. Cancelling
+fires <code>On Passage State Changed</code>, block 7b stops the movement and chooses a destination, and
+that is the cancellation contract being obeyed rather than described.</p>
+<h4 id="bi-block-6--two-destinations-and-they-are-not-interchangeable">Block 6 — Two destinations, and they are not interchangeable</h4>
+<pre><code>ContinueToParking     ──▶ Move To Location (ParkingSpot)   -- the FAR side
+RetreatToApproachSide ──▶ Move To Location (RetreatSpot)   -- the side it came from
+</code></pre>
+<p><strong>This is the most important thing on this page.</strong></p>
+<p><code>ParkingSpot</code> is beyond the passage. An NPC is only sent there once it has actually come
+through, or once it is already inside and has to finish clearing the opening.</p>
+<p><code>RetreatSpot</code> is on the side it approached from. A refusal, or a reservation lost while the body
+is still on the approach side, goes here.</p>
+<p>Both events clear the movement check from block 4b first: this is the end of the NPC's business
+with the passage either way.</p>
+<p>Partial paths <strong>are</strong> allowed on these two moves, unlike the passage move in block 4. Getting as
+close as navigation can manage is a perfectly good outcome when nothing depends on arriving
+exactly, and nothing is gated on the result.</p>
+<p>Sending a refused NPC to the far side asks navigation for a route to the other side of the
+wall — and the shortest one goes straight through the doorway it was just refused, with no
+permission, possibly into oncoming traffic. <strong>The passage cannot stop that: it controls
+permission, not collision.</strong></p>
+<h4 id="bi-block-7--finished-or-lost-it">Block 7 — Finished, or lost it</h4>
+<pre><code>On Passage Exited        ──▶ ReportedInside = false ──▶ ContinueToParking
+
+On Passage Failed        ──▶ RecoverAfterLosingPermission
+
+On Passage State Changed ──▶ Switch (NewState)
+                                Cancelled ──▶ RecoverAfterLosingPermission
+</code></pre>
+<p><code>On Passage Failed</code> carries a reason: reservation timeout, traversal timeout, or invalidation.</p>
+<p><strong>An explicit cancellation is not a failure and does not fire it.</strong> You asked for it, so the
+component tells you through <code>On Passage State Changed</code> instead. If nothing is listening there,
+nothing stops the body — see block 7b.</p>
+<h4 id="bi-block-7b--losing-permission-stop-the-body-then-look-at-where-it-is">Block 7b — Losing permission: stop the body, then look at where it is</h4>
+<pre><code>RecoverAfterLosingPermission
+   ──▶ DisarmMovementCheck
+   ──▶ StopCurrentMovement          (Get AI Controller ▸ Stop Movement)
+   ──▶ Is Overlapping Actor (PassageZone)?
+          True  ──▶ ReportObstruction                      -- a real body in a real opening
+          False ──▶ ReportedInside = false
+                     └─▶ nearer ParkingSpot than RetreatSpot?
+                            True  ──▶ ContinueToParking     -- already across
+                            False ──▶ RetreatToApproachSide -- still on its own side
+</code></pre>
+<p><strong>Stopping the movement is first, and it is the whole point of this block.</strong> Losing permission
+does not stop a body. In our tests, a sample that called <code>Cancel Current Passage</code> and left
+the old <code>Move To</code> running did exactly that: a cancelled NPC was observed inside the doorway with no
+permission and out the far side at x = +183 cm, its own state reading <code>Cancelled</code> the whole way.</p>
+<p><strong>Then the destination is chosen by measurement, not by a flag.</strong></p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Where the body is</th>
+<th>What happens</th>
+<th>Why not the obvious thing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>in the opening</td>
+<td>tell the game (block 8), then finish clearing</td>
+<td>reversing drags it back the wrong way</td>
+</tr>
+<tr>
+<td>already across</td>
+<td>carry on to <code>ParkingSpot</code>
+</td>
+<td>retreating walks it back through the doorway with no permission — the same bug, mirrored</td>
+</tr>
+<tr>
+<td>still on its own side</td>
+<td><code>RetreatSpot</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong><code>ReportedInside</code> is deliberately not consulted here.</strong> It records what the passage was
+<strong>told</strong>. After an entry-side retreat, or an exit that was never reported, that is exactly the
+thing that is wrong. The doorway volume and the two destinations are measurements; the flag is a
+memory of a message. The sample keeps it, and keeps it out of this decision, on purpose.</p>
+<p><strong>Why compare against the NPC's own two destinations</strong> rather than the passage anchors? Because
+<code>Get Traversal Target</code> and <code>Get Approach Target</code> need a live relationship, and by the time this
+runs there is not one — they answer with a zero vector, every distance becomes a tie, and a tie
+sends an NPC that is already across back through the doorway.</p>
+<h4 id="bi-block-8--a-body-in-the-doorway-with-no-permission">Block 8 — A body in the doorway with no permission</h4>
+<p>If a reservation expires while its NPC is physically inside, the passage will admit the next
+agent into an opening that is still occupied. <strong>The scheduler cannot see bodies and cannot clear
+one.</strong> It issues permission, nothing more.</p>
+<p>So the game has to act — and <strong>not the stuck NPC itself</strong>:</p>
+<pre><code>ReportObstruction ──▶ Branch (Obstructing)
+                        True  ──▶ ContinueToParking            -- already reported; keep clearing
+                        False ──▶ Obstructing = true
+                                   └─▶ DemoRecovery ▸ BeginObstruction
+                                        └─▶ ContinueToParking
+
+ReportClearance   ──▶ Branch (Obstructing)                     -- from block 9, on real clearance
+                        True ──▶ Obstructing = false
+                                  └─▶ ReportedInside = false
+                                       └─▶ DemoRecovery ▸ EndObstruction
+</code></pre>
+<p>The obvious design has each NPC write <code>Blocked</code> on the way in and <code>Available</code> on the way out,
+unconditionally. We tested it: both halves are wrong, and both were reproduced:</p>
+<ul>
+<li>the reopen <strong>erased a <code>Disabled</code> decision</strong> the game had made while the NPC was still stuck,
+and admitted the next agent;</li>
+<li>the reopen fired on the <strong>first</strong> body to get out, while a <strong>second</strong> was still standing in
+the opening.</li>
+</ul>
+<p>An NPC knows it is obstructing. It does not know what the passage is for. So it reports, once,
+and something that can see the whole picture decides. Clearance is reported from the doorway
+volume in block 9, when the capsule has actually left — not when the NPC thinks it has.</p>
+<h4 id="bi-block-8b--what-the-game-does-with-that-report">Block 8b — What the game does with that report</h4>
+<p>In the example that something is <code>BP_PassageDemoControls</code>:</p>
+<pre><code>BeginObstruction ──▶ ObstructionCount + 1
+                      └─▶ Switch (Passage ▸ Availability)
+                             Available ──▶ Set Passage Availability (Blocked)
+
+EndObstruction   ──▶ ObstructionCount − 1 (never below zero)
+                      └─▶ Branch (count &lt;= 0)
+                             True ──▶ announce that the doorway is clear
+</code></pre>
+<p>Two rules:</p>
+<ol>
+<li>
+<strong>Count, do not toggle.</strong> The passage stays shut until the <em>last</em> body is clear. Otherwise the
+first NPC to get out reopens a doorway a second one is still standing in.</li>
+<li>
+<strong>Clearing an obstruction does not reopen anything.</strong> It announces the clearance and stops.
+Reopening is a separate, explicit decision — key 1, or your own <code>Set Passage Availability</code>.</li>
+</ol>
+<h4 id="bi-why-rule-2-is-not-laziness">Why rule 2 is not laziness</h4>
+<p>A tempting fix keeps a <code>DemoBlockedPassage</code> flag and reopens if the flag is set <em>and</em> the
+current value still reads <code>Blocked</code>. That looks like ownership and is not. <strong>An enum value cannot
+say who set it.</strong> Another system asking for <code>Blocked</code>, or a <code>Disabled</code> that somebody later
+changed to <code>Blocked</code>, are indistinguishable from this actor's own closure.</p>
+<p>Measured against that version, with a real body timing out in the doorway and the game then
+applying its own closure:</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Game's decision</th>
+<th>At real capsule clearance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Disabled</code></td>
+<td>held correctly</td>
+</tr>
+<tr>
+<td><code>Blocked</code></td>
+<td><strong>overwritten to <code>Available</code>, 1 fresh reservation admitted</strong></td>
+</tr>
+<tr>
+<td>
+<code>Disabled</code>, then <code>Blocked</code>
+</td>
+<td><strong>overwritten to <code>Available</code>, 1 fresh reservation admitted</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Worse, it was nearly invisible: checking only at the moment of clearance <strong>passed</strong>, because the
+NPC admitted through the reopened doorway timed out under the shortened traversal timeout and set
+<code>Blocked</code> again before anything looked. The example's automated tests now sample the invariant on
+every frame from the external decision onwards, which is the only reason it stays fixed.</p>
+<p><strong>Leaving a passage shut is always safe. Reopening one is a decision about the whole game</strong>, and
+a demo NPC recovery is the last thing that should be making it.</p>
+<p>Blocking is non-destructive: everybody waiting keeps their place and their turn, so this costs
+the queue nothing but time.</p>
+<p><strong>In your project this is not new code.</strong> It is whatever already opens and closes your doors.
+<code>Set Passage Availability</code> is the entire seam, and the plugin needs no manager, no subsystem and
+no registration to make this work.</p>
+<h4 id="bi-block-9--report-where-the-body-actually-is">Block 9 — Report where the body actually is</h4>
+<pre><code>ActorBeginOverlap ──▶ Branch (Actor Has Tag "AIPassageZone"
+                              AND Other Actor ▸ Get Attach Parent Actor == Passage)
+                          └─▶ Branch (Passage ▸ Has Reservation (Self))
+                                  └─▶ Notify Entered Passage ──▶ ReportedInside = result
+
+ActorEndOverlap   ──▶ (same identity test)
+                          └─▶ PassageZone = Other Actor
+                                └─▶ Branch (Passage ▸ Has Reservation (Self))
+                                        True  ──▶ ConfirmExitIfClearOfFarSide
+                                        False ──▶ ReportClearance
+</code></pre>
+<p><strong>The volume is also REMEMBERED, on both ends, before the reservation is checked.</strong> <code>PassageZone</code>
+is what block 7b asks "is this body in the opening right now", and an NPC can be physically in a
+doorway it has no permission for — which is the whole situation block 8 exists for.</p>
+<p><strong>No reservation and the capsule has left the box means the OPENING IS CLEAR.</strong> That is the only
+fact <code>ReportClearance</code> needs, and it is measured rather than remembered. The handler itself does
+nothing unless this NPC actually reported an obstruction, so the ordinary case costs one branch.</p>
+<p><code>ReportedInside</code> is deliberately kept out of every occupancy decision: it records what the
+passage was <em>told</em>, which after a missed exit or an entry-side retreat is exactly the thing that
+is wrong.</p>
+<p><strong>The volume is identified by attachment, not by the tag alone.</strong> A tag is shared by every
+passage zone in the level, so a neighbouring doorway's volume would otherwise report an entry —
+or a completed traversal — against the passage this NPC is actually using. Attaching each volume
+to its own passage answers "whose doorway is this" with no new API.</p>
+<p><strong>Entry also requires an actual reservation.</strong> A queued NPC brushing the volume has no permission
+and has not entered anything.</p>
+<h4 id="bi-block-10--which-way-did-it-leave">Block 10 — Which way did it leave?</h4>
+<pre><code>ConfirmExitIfClearOfFarSide
+   ──▶ distance to Get Traversal Target  &lt;  distance to Get Approach Target
+          True  ──▶ Notify Exited Passage ──▶ ReportedInside = false
+          False ─ (it backed out the way it came; leave the reservation alone)
+</code></pre>
+<p>Overlap ending only says the capsule is clear of the box. An NPC that backs out the way it came
+has also stopped overlapping, and reporting that as an exit would tell the passage a traversal
+finished while the NPC is still on its original side.</p>
+<p><strong>Give the far-side anchor room.</strong> A move finishes once the pawn is within its acceptance radius
+<em>plus its own radius</em> of the goal. If that stopping point is not comfortably past the point where
+the volume releases, the NPC halts while still overlapping and never reports exit at all. In the
+example the anchor is 360 cm out and the volume releases at 124 cm — a margin of 142 cm. At an
+earlier 220 cm the margin was two centimetres, and measured, half the NPCs hung there until the
+traversal timeout.</p>
+<hr>
+<h3 id="bi-3-what-this-actually-costs-honestly">3. What this actually costs, honestly</h3>
+<p>The shipped <code>BP_PassageDemoNPC</code> graph is <strong>214 logic nodes in 13 commented blocks</strong>, and
+<code>BP_PassageDemoControls</code> is <strong>96 logic nodes in 3 blocks</strong>. Both numbers are counted by an
+automated test that reads every node in every graph of the shipped assets. They are not
+estimates.</p>
+<p>No wrapper is hiding anything and no part of it is generated at runtime: that is the whole
+graph, and it is what you would be copying.</p>
+<p><strong>Not all of it is the recipe.</strong> Roughly:</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Roughly</th>
+<th>Required in your project?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ask, and tell a fresh refusal from a conflict (blocks 1–2)</td>
+<td>20</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Move when the passage says so (blocks 3–4)</td>
+<td>24</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Movement check, armed and bounded (block 4b)</td>
+<td>26</td>
+<td>yes in practice — without it NPCs stall in the doorway</td>
+</tr>
+<tr>
+<td>A route that cannot be walked (block 5)</td>
+<td>12</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Two destinations (block 6)</td>
+<td>16</td>
+<td>
+<strong>yes</strong> — one destination is a correctness bug</td>
+</tr>
+<tr>
+<td>Finished, or lost permission (blocks 7–7b)</td>
+<td>34</td>
+<td>
+<strong>yes</strong> — without it a body that lost permission walks through</td>
+</tr>
+<tr>
+<td>Reporting an obstruction to the game (block 8)</td>
+<td>26</td>
+<td>the <em>report</em> yes; who acts on it is yours</td>
+</tr>
+<tr>
+<td>Entry, exit and identity (blocks 9–10)</td>
+<td>34</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><strong>Fault scenarios (block 11)</strong></td>
+<td><strong>22</strong></td>
+<td><strong>no — delete it</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Block 11 and its six demonstration variables (<code>UnreachableSpot</code> and the five <code>Simulate…</code> flags)
+exist so the failures can be reproduced on a key press. <strong>Delete block 11's nodes, but keep the
+six variables.</strong> Five Branches in blocks 4, 9 and 10 read the <code>Simulate…</code> flags, and block 4
+reads <code>UnreachableSpot</code> on the scenario path. At their defaults (<code>false</code>) those Branches always
+take the normal path, so keeping the variables changes nothing. Deleting them breaks the compile.</p>
+<p>Keep these six variables. Removing them means removing every remaining reference and checking
+movement and recovery again; that cleanup is not part of this recipe.</p>
+<p><code>BP_PassageDemoControls</code> is demonstration in a different sense: it is a <strong>stand-in for your
+game</strong>, not for the plugin. Its 96 nodes are three keys that change availability, the obstruction
+counting described in block 8b, and the seven fault scenarios. In your project the first part is
+already written — it is whatever opens and closes your doors.</p>
+<p><strong>Do not trim the recipe to make the number look better.</strong> Every block above was added because
+something measurably went wrong without it — an NPC crossing without permission after being
+cancelled, an NPC halting one centimetre short of clearing the doorway, a neighbouring doorway
+reporting the wrong traversal, a recovering NPC reopening a passage the game had disabled. A
+shorter graph that does those things is not a simpler product.</p>
+<hr>
+<h3 id="bi-4-variables-on-the-sample-npc">4. Variables on the sample NPC</h3>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Passage</code></td>
+<td>which passage to ask. Instance-editable and exposed on spawn</td>
+</tr>
+<tr>
+<td><code>EntrySide</code></td>
+<td>which end this NPC approaches from</td>
+</tr>
+<tr>
+<td><code>ParkingSpot</code></td>
+<td>where to go once <strong>through</strong>, beyond the passage</td>
+</tr>
+<tr>
+<td><code>RetreatSpot</code></td>
+<td>where to go when <strong>refused</strong>, on the approach side</td>
+</tr>
+<tr>
+<td><code>StartOnBeginPlay</code></td>
+<td>ask immediately, or drive <code>StartPassage</code> yourself</td>
+</tr>
+<tr>
+<td><code>DemoRecovery</code></td>
+<td>who to tell when this NPC is stuck in the opening. Leave it empty and the NPC still clears the doorway; only the blocking is skipped</td>
+</tr>
+<tr>
+<td><code>MaxIdleRedrives</code></td>
+<td>how many idle re-drives in a row before the route counts as unwalkable. Default 6, and the check runs twice a second, so three seconds</td>
+</tr>
+<tr>
+<td><code>PassageZone</code></td>
+<td>private; the doorway volume this NPC has actually overlapped. <strong>Where the body is</strong>
+</td>
+</tr>
+<tr>
+<td><code>ReportedInside</code></td>
+<td>private; whether the passage was <strong>told</strong> this NPC is inside. Not the same question, and not what recovery decides on — see block 7b</td>
+</tr>
+<tr>
+<td><code>Obstructing</code></td>
+<td>private; keeps the obstruction report and its clearance balanced</td>
+</tr>
+<tr>
+<td><code>IdleRedriveCount</code></td>
+<td>private; counts consecutive fruitless re-drives</td>
+</tr>
+</tbody>
+</table></div>
+<p>The first five matter for your own NPC. <code>ParkingSpot</code> and <code>RetreatSpot</code> are not
+interchangeable — see block 6.</p>
+<h4 id="bi-demonstration-only--keep-these-when-you-delete-block-11-see-section-3">Demonstration only — keep these when you delete block 11 (see section 3)</h4>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UnreachableSpot</code></td>
+<td>where the unreachable-move scenario aims</td>
+</tr>
+<tr>
+<td><code>SimulateNeverApproach</code></td>
+<td>key 0: hold the grant and never walk to it</td>
+</tr>
+<tr>
+<td><code>SimulateMissedEntry</code></td>
+<td>key 4: cross, but never report the entry</td>
+</tr>
+<tr>
+<td><code>SimulateMissedExit</code></td>
+<td>key 5: get through and never report the exit</td>
+</tr>
+<tr>
+<td><code>SimulateUnreachableTarget</code></td>
+<td>key 7: send the next move somewhere navigation cannot reach</td>
+</tr>
+<tr>
+<td><code>SimulateStallInside</code></td>
+<td>key 8: stop dead in the opening</td>
+</tr>
+</tbody>
+</table></div>
+<p>They exist so every failure path on this page can be reproduced on a key press instead of
+waited for. Blocks 4, 9 and 10 still read them; at <code>false</code> they change nothing.</p>
+<p><strong>Keys 0 and 4 are the two halves of "lost a reservation", and they are not interchangeable.</strong></p>
+<div class=tw><table>
+<thead>
+<tr>
+<th></th>
+<th>Key 0</th>
+<th>Key 4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What is suppressed</td>
+<td>the movement</td>
+<td>the entry <strong>notification</strong>
+</td>
+</tr>
+<tr>
+<td>Where the body is at the timeout</td>
+<td>still on its approach side</td>
+<td>already across</td>
+</tr>
+<tr>
+<td>Correct recovery</td>
+<td>retreat</td>
+<td>carry on to <code>ParkingSpot</code>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Key 4 does <strong>not</strong> demonstrate an unauthorised crossing. The NPC holds its reservation the whole
+way across; only the report is missing. Sending it back would be the unsafe thing.</p>
+<hr>
+<h3 id="bi-5-traffic-settings">5. Traffic settings</h3>
+<p>One setting matters; the rest have working defaults.</p>
+<p><strong>Traffic Policy</strong></p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>When both sides are waiting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<strong>First Come, Direction Lock</strong> (default)</td>
+<td>the side whose front waiter has waited longest goes next</td>
+</tr>
+<tr>
+<td><strong>Alternating</strong></td>
+<td>strict turn-taking between sides</td>
+</tr>
+<tr>
+<td><strong>Batch</strong></td>
+<td>like Alternating, but up to <code>Batch Size</code> agents per contested turn</td>
+</tr>
+<tr>
+<td><strong>One Way</strong></td>
+<td>only <code>One Way Entry Side</code> is accepted; the other side is refused outright</td>
+</tr>
+<tr>
+<td><strong>Two Way (wide passages)</strong></td>
+<td>nobody waits for the other side: each direction has its own lane (<code>Two Way Lane Offset</code> to the right of travel) and its own <code>Max Concurrent Agents</code>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Choose it at design time. Changing it while traffic is moving is not corrupting, but the turn
+already running is not retro-fitted.</p>
+<p><strong>Max Concurrent Agents</strong> — how many may hold permission at once. Above 1 means several agents
+travelling the <strong>same</strong> way. Opposite directions never mix, at any capacity (Two Way excepted: there
+the limit is per direction, in separate lanes). Raising it does not
+let one side monopolise the passage: once the other side is waiting, the current turn stops
+admitting new agents and drains before the direction changes.</p>
+<hr>
+<h3 id="bi-6-availability--a-door-that-opens-and-closes">6. Availability — a door that opens and closes</h3>
+<p>One property, three states, one setter:</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>State</th>
+<th>Fresh requests</th>
+<th>Existing queue</th>
+<th>New grants</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Available</strong></td>
+<td>accepted</td>
+<td>kept</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><strong>Blocked</strong></td>
+<td>accepted, answered <code>Queued</code>
+</td>
+<td>kept</td>
+<td><strong>no</strong></td>
+</tr>
+<tr>
+<td><strong>Disabled</strong></td>
+<td>refused with <code>Unavailable</code>
+</td>
+<td>kept</td>
+<td>no</td>
+</tr>
+</tbody>
+</table></div>
+<p>Use <strong>Blocked</strong> for a door that is shut right now. Agents queue, walk to their waiting places,
+and go the moment it reopens — <strong>with no new request from them.</strong> Nobody asks twice, nobody
+polls the passage, and nobody loses their place. That is the point of it being a separate state
+from Disabled.</p>
+<p>To be precise about what the sample does and does not do: it never re-issues a <strong>request</strong>. It
+does re-issue a <strong>move</strong> when its own controller has gone idle (block 4b), which is a different
+thing — that is the NPC checking whether it is still walking, not asking the passage again.</p>
+<p>Use <strong>Disabled</strong> to take a passage out of service, so approaching AI is told immediately to go
+somewhere else.</p>
+<p>Changing availability is never destructive. Nobody is cancelled, failed, reordered or evicted,
+in either direction.</p>
+<p><strong>At runtime, always use <code>Set Passage Availability</code>.</strong> The Details-panel field sets the STARTING
+state and is deliberately locked while the game is running: writing it directly would change
+what the passage reports without re-running the scheduling that lets the waiting agents move,
+which produces a passage that says "Available" while nobody goes anywhere.</p>
+<p>This is also the entire integration seam for a door, gate, lift or Nav Link system. When your
+route closes, call <code>Set Passage Availability (Blocked)</code>. When it opens, call it with <code>Available</code>.
+The plugin never touches your Nav Link.</p>
+<hr>
+<h3 id="bi-7-optional-and-deliberately-out-of-the-basic-recipe">7. Optional, and deliberately out of the basic recipe</h3>
+<p><strong><code>Notify Entering Passage</code> / <code>Notify Exiting Passage</code></strong> — extra phases for projects that want to
+distinguish "walking to the door" from "in the doorway", or "on the way out" from "clear". They
+are inspection detail. The basic recipe reports entry and exit only, and that is a complete
+lifecycle.</p>
+<p><strong>Controller-global events</strong> (<code>On Request Queued</code>, <code>On Passage Granted</code>, <code>On Passage Released</code>,
+<code>On Request Cancelled</code>, <code>On Queue Order Changed</code>, <code>On Reservation Phase Changed</code>) — these
+broadcast about <strong>every</strong> agent and you would have to filter by requester yourself. They are for
+something watching the whole passage: a counter above a gate, an analytics hook. An NPC binds
+its own component's events instead, which are the same information already filtered.</p>
+<p><strong><code>Pump Scheduler</code></strong> — maintenance, run automatically by the controller's own timer. There is no
+reason for game code to call it.</p>
+<p><strong>Queue-slot primitives</strong> (<code>Get Queue Slot Transform</code>, <code>Get Queue Assignment</code>, <code>Get Queue Index</code>)
+— the machinery under <code>Get Suggested Movement Target</code>. Useful for tooling; not needed to walk
+through a door.</p>
+<hr>
+<h3 id="bi-8-performance-notes">8. Performance notes</h3>
+<ul>
+<li>No Tick on the controller and none on the agent component.</li>
+<li>The optional navigator ticks only while it squeezes through a crowd (about 1.5 s at a time).
+Measured with 120 NPCs jammed at one door: on average 0.04–0.05 ms per squeezing NPC per frame,
+under 2 ms in the worst frame (editor Play-in-Editor, Development build, a laptop Ryzen 7
+5800HS; not measured in a packaged game). Each order costs one synchronous path query per order and
+per passage crossed, plus one box test per passage per path segment — so give a big group's
+orders over a few frames. Its 0.5 s check timer runs only while the NPC is approaching or
+crossing a passage, and a 0.4 s crowd-jam check runs while it has an order.</li>
+<li>One timer per controller, armed only while it has somebody queued or inside, and disarmed
+when idle.</li>
+<li>Waiting positions are computed when asked, never stored. A fifty-agent queue allocates
+nothing.</li>
+<li>The debug overlay is off by default, costs nothing when off, and is compiled out of Shipping
+builds entirely.</li>
+</ul>
+
+<hr>
+<h2 id="ts">Troubleshooting</h2>
+<p>Start here: <strong>select the passage and tick <code>Show Debug Visualization</code></strong> (AI Passage → Debug),
+then press Play. The overlay names the state in words, not only in colour, and most of the
+problems below are answered by reading it.</p>
+<p><strong>No words, only shapes?</strong> The default <code>Debug Text</code> is On Hover: words appear only next to a
+visible mouse cursor. A game that hides the cursor (most first- and third-person games) needs
+<code>Debug Text</code> = <strong>Always</strong> — the log says so after the cursor has stayed hidden for 10 seconds.
+Always needs the player to have a HUD; the log says so too if there is none.</p>
+<p>It draws:</p>
+<ul>
+<li>availability, with a sentence explaining what that state means;</li>
+<li>reservations held against capacity, and the current direction;</li>
+<li>both queue lengths, with each waiting position numbered and labelled;</li>
+<li>the phase of every agent currently holding permission;</li>
+<li>
+<code>DRAINING</code> when the passage is deliberately emptying before a direction change;</li>
+<li>
+<code>DISABLED WITH n STILL WAITING</code> when a shut passage is holding a queue;</li>
+<li>the last reservation to end and why, for a few seconds after it happens;</li>
+<li>a short speech bubble over an NPC for 2.5 s whenever its state changes: <code>Waiting (#2)</code>,
+<code>My turn!</code>, <code>Going through</code>, <code>Through!</code>, <code>Door shut - waiting</code>, <code>Refused - ...</code>, <code>Left the line</code>,
+<code>Gave up my turn</code>, <code>Too slow - turn lost</code>, <code>Stuck inside - timed out</code>. Drawn every frame on
+the viewport (no HUD needed), following the NPC; hidden when Debug Text is Off.</li>
+</ul>
+<p>The overlay only reads. Turning it on cannot change behaviour.</p>
+<hr>
+<h3 id="ts-nothing-moves-at-all">Nothing moves at all</h3>
+<p>Work down this list. It is ordered by how often each one is the answer.</p>
+<p><strong>1. Is there a NavMesh?</strong> Press <code>P</code> in the viewport. No green means nothing can walk anywhere.
+Add a NavMesh Bounds Volume over the area and build navigation.</p>
+<p><strong>2. Is the NPC possessed?</strong> On the Character Blueprint, <strong>Auto Possess AI</strong> must be
+<strong>Placed in World or Spawned</strong>. "Placed in World" alone silently skips anything spawned at
+runtime: no AI Controller, so every MoveTo does nothing and the passage gets blamed.</p>
+<p><strong>3. Did anything actually ask?</strong> The plugin does not intercept your existing MoveTo calls. A
+passage request is an explicit call on the route. If the overlay shows <code>waiting A:0 B:0</code> and no
+reservations, nobody asked.</p>
+<p><strong>4. Is the passage Available?</strong> The overlay says <code>BLOCKED</code> or <code>DISABLED</code> in words if not.</p>
+<p><strong>5. Is the waiting position reachable?</strong> Waiting positions are computed from the queue anchor
+you placed. Nothing checks that they land on the NavMesh. Move the anchor.</p>
+<hr>
+<h3 id="ts-an-npc-waits-and-never-goes">An NPC waits and never goes</h3>
+<div class=tw><table>
+<thead>
+<tr>
+<th>The overlay says</th>
+<th>What it means</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BLOCKED</code></td>
+<td>temporary closure; requests queue, nobody is admitted</td>
+<td>call <code>Set Passage Availability (Available)</code>
+</td>
+</tr>
+<tr>
+<td><code>DISABLED WITH n STILL WAITING</code></td>
+<td>out of service, and the old queue was kept on purpose</td>
+<td>reopen it, or cancel those agents explicitly</td>
+</tr>
+<tr>
+<td><code>DRAINING</code></td>
+<td>working correctly — the agents inside are finishing so the other side can have a turn</td>
+<td>nothing. This is not a deadlock</td>
+</tr>
+<tr>
+<td>
+<code>reservations 1/1</code> and someone else queued</td>
+<td>the passage is full</td>
+<td>nothing, unless the holder is stuck (below)</td>
+</tr>
+<tr>
+<td>everything looks idle and open</td>
+<td>see "Nothing moves at all"</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p><code>DRAINING</code> is the one worth learning. A passage that is deliberately holding back before
+changing direction looks exactly like a locked one if you only count reservations.</p>
+<hr>
+<h3 id="ts-an-npc-holds-the-passage-and-never-comes-out">An NPC holds the passage and never comes out</h3>
+<p>That is what the two timeouts are for.</p>
+<ul>
+<li>
+<strong>Reservation Timeout Seconds</strong> (default 15) — it was given permission and never arrived.
+The overlay reports <code>last release -&gt; Name: TimedOut</code>.</li>
+<li>
+<strong>Traversal Timeout Seconds</strong> (default 20) — it got inside and never reported exit.
+Reported as <code>TraversalTimedOut</code>.</li>
+</ul>
+<p><strong>If either is set to 0, that timeout is off</strong>, and such an NPC holds the passage forever.
+Setting them to 0 is the single most common way to build a permanent deadlock with this plugin.</p>
+<p>The two reasons are worth telling apart:</p>
+<ul>
+<li>
+<code>TimedOut</code> — never entered. Usually the route to the doorway is broken, or the NPC's own logic
+dropped the move.</li>
+<li>
+<code>TraversalTimedOut</code> — entered and never exited. Usually the exit notification is missing: it
+physically left, but nothing told the passage.</li>
+</ul>
+<hr>
+<h3 id="ts-an-npc-finished-but-the-passage-still-thinks-it-is-inside">An NPC finished but the passage still thinks it is inside</h3>
+<p>Your exit reporting is not firing. Check, in order:</p>
+<ol>
+<li>The doorway volume has the tag the recipe looks for (<code>AIPassageZone</code> in the example).</li>
+<li>The NPC's capsule has <strong>Generate Overlap Events</strong> ticked.</li>
+<li>The volume overlaps pawns rather than blocking or ignoring them.</li>
+<li>You are reporting on overlap <strong>END</strong>, not on reaching a target point.</li>
+</ol>
+<p>Point 4 matters even when everything looks right: an NPC's origin can pass its goal while its
+back half is still in the gap. Report exit from the body leaving the opening.</p>
+<p>If nothing reports exit at all, <code>Traversal Timeout Seconds</code> will eventually reclaim the
+capacity — that is the safety net, not the mechanism.</p>
+<hr>
+<h3 id="ts-two-npcs-get-wedged-in-the-doorway">Two NPCs get wedged in the doorway</h3>
+<p>The passage grants <strong>permission</strong>, and permission is not a collision volume. If two bodies are
+in the opening at once, one of them did not ask, or one entered without permission.</p>
+<ul>
+<li>Every NPC using the passage must request it. One that walks through without asking is
+invisible to the scheduler.</li>
+<li>Check <code>Max Concurrent Agents</code>. Above 1 deliberately admits several agents — travelling the
+same way, but they still have to fit.</li>
+<li>Check the opening is actually wide enough for one capsule with room to spare. The example
+uses 120 cm for Unreal's default 68 cm-wide capsule.</li>
+</ul>
+<hr>
+<h3 id="ts-an-npc-crossed-the-passage-without-permission">An NPC crossed the passage without permission</h3>
+<p>Two causes, and the second one catches almost everybody.</p>
+<h4 id="ts-1-your-cleanup-path-sent-it-there">1. Your cleanup path sent it there</h4>
+<p>If a refused NPC — or one that lost its reservation before entering — is told to go to a
+destination on the <strong>far side</strong>, navigation routes it through the passage it was just refused.
+The scheduler cannot stop this: it issues permission, it does not own collision, and it never
+sees a body that simply walks through.</p>
+<p>Keep two destinations and never mix them:</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Send it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Came through, or is already inside and must finish clearing</td>
+<td>beyond the passage</td>
+</tr>
+<tr>
+<td>Refused, or lost the reservation while still on the approach side</td>
+<td>back to the side it came from</td>
+</tr>
+</tbody>
+</table></div>
+<p>The sample calls these <code>ParkingSpot</code> and <code>RetreatSpot</code>.</p>
+<h4 id="ts-2-you-cancelled-it-and-nothing-stopped-the-body">2. You cancelled it and nothing stopped the body</h4>
+<p><strong><code>Cancel Current Passage</code> removes the permission. It does not stop the <code>Move To</code> you already
+issued.</strong> The NPC keeps walking on its old order, through the opening it no longer has any right
+to use, while its own state reads <code>Cancelled</code> the entire way.</p>
+<p>Measured in an earlier build of the shipped example: cancelled at x = −950 cm, observed inside
+the doorway with no permission, and out the far side at x = +183 cm.</p>
+<p><strong>And cancellation does not fire <code>On Passage Failed</code>.</strong> That event is for outcomes — the two
+timeouts and invalidation. A cancellation is a decision you made, so the component reports it on
+<code>On Passage State Changed</code> with <code>NewState = Cancelled</code>. If you only bound the failure event,
+nothing in your graph ever hears about it.</p>
+<p>What to do:</p>
+<ol>
+<li>Handle <code>On Passage State Changed</code> and act on <code>Cancelled</code>.</li>
+<li>
+<strong>Stop the movement first</strong> — <code>Get AI Controller ▸ Stop Movement</code>. Everything you decide
+afterwards is worthless while an old move order is still carrying the NPC.</li>
+<li>Only then choose where to send it, <strong>from where the body actually is</strong> — not from a flag
+recording what you told the passage earlier. See <code>BLUEPRINT_INTEGRATION.md</code>, block 7b.</li>
+</ol>
+<p>Press <strong>4</strong>, <strong>7</strong> or <strong>8</strong> in the Quick Start map to watch this go right.</p>
+<hr>
+<h3 id="ts-an-npc-reaches-the-far-side-but-never-reports-exit">An NPC reaches the far side but never reports exit</h3>
+<p>It stopped short of clearing the volume.</p>
+<p>A move finishes once the pawn is within its acceptance radius <strong>plus its own capsule radius</strong> of
+the goal. If your far-side anchor is close to the volume that reports exit, the NPC can halt
+while it is still overlapping — and then it holds the passage until the traversal timeout, every
+time, on some fraction of crossings.</p>
+<p>Work it out:</p>
+<pre><code>volume releases at   = volume half-depth + capsule radius
+the NPC stops at     = anchor distance - (acceptance radius + capsule radius)
+</code></pre>
+<p>The second number must be <strong>comfortably</strong> larger than the first. In the shipped example it is
+266 against 124, a margin of 142 cm. At an earlier 220 cm anchor the margin was 2 cm and half
+the NPCs hung there.</p>
+<hr>
+<h3 id="ts-entry-or-completion-is-reported-on-the-wrong-passage">Entry or completion is reported on the wrong passage</h3>
+<p>Two doorways near each other, and the sample's volume test is too loose.</p>
+<p>A tag alone is shared by every passage zone in the level, so an NPC brushing a <em>neighbouring</em>
+volume will report entry — or a finished traversal — against the passage it is actually using.</p>
+<p>Associate each volume with its own passage. The example attaches the trigger to its passage
+actor and checks <code>Get Attach Parent Actor</code> as well as the tag.</p>
+<p>Also require an actual reservation before reporting entry: a queued NPC touching the volume has
+no permission and has not entered anything.</p>
+<hr>
+<h3 id="ts-an-npc-gives-up-as-soon-as-the-queue-moves">An NPC gives up as soon as the queue moves</h3>
+<p>This is the classic integration bug, and it is worth recognising.</p>
+<p>When the queue shuffles forward, the waiting NPC's current MoveTo is <strong>cancelled</strong>, and it
+reports failure a moment later. If your move-failure handler cancels the passage, it throws
+away a reservation the NPC is actively using.</p>
+<p><strong>Blueprint cannot tell that obsolete report apart from a current one.</strong> The id inside
+<code>FAIRequestID</code> is a private property with no Blueprint accessor and <code>GetCurrentMoveRequestID</code> is
+not exposed, so any handler is guessing — and a counter shared by every callback does not fix
+that, it just hides it.</p>
+<p>The sample's answer is to <strong>not subscribe to move completion at all</strong>. Nothing obsolete can
+arrive if nothing is listening. Instead:</p>
+<ul>
+<li>a route that genuinely cannot be walked is caught at <strong>issue</strong> time, from <code>Move To Location</code>'s
+immediate <code>Failed</code> result;</li>
+<li>a move abandoned mid-way is picked up by a <strong>half-second poll</strong>: if the passage still expects
+something of this NPC and its controller has gone idle, ask where to go and set off again.</li>
+</ul>
+<p>Polling steady state is safe where listening is not — there is no in-flight abort to race with.</p>
+<blockquote>
+<p>Without that poll, measured, NPCs stopped one centimetre short of clearing the doorway and sat
+there for the full traversal timeout.</p>
+</blockquote>
+<hr>
+<h3 id="ts-a-request-is-refused-immediately">A request is refused immediately</h3>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Result</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Rejected</code></td>
+<td>this component already has a live relationship with a different passage or the opposite side; or this is a One Way passage and you asked from the forbidden side</td>
+</tr>
+<tr>
+<td><code>Unavailable</code></td>
+<td>the passage is Disabled, or something is shutting down</td>
+</tr>
+<tr>
+<td><code>Invalid</code></td>
+<td>the passage, the actor or the side was not usable</td>
+</tr>
+<tr>
+<td><code>Cancelled</code></td>
+<td>a listener cancelled the request from inside its own callback</td>
+</tr>
+</tbody>
+</table></div>
+<p>None of these is a retry hint.</p>
+<p><strong><code>Unavailable</code>, <code>Invalid</code> and <code>Cancelled</code> create nothing</strong> — no queue entry, no reservation, no
+reference. Send the NPC somewhere else.</p>
+<p><strong><code>Rejected</code> is the exception, and getting it wrong strands your queue.</strong> It has two causes:</p>
+<ul>
+<li>a <strong>fresh</strong> request was turned away — nothing exists, go elsewhere;</li>
+<li>you asked for a <strong>second</strong> passage, or the <strong>opposite side</strong> of the one you are already
+using — and that leaves <strong>the original relationship completely untouched</strong>.</li>
+</ul>
+<p>Walk away in the second case and you abandon a reservation the passage is still counting, and
+everybody queued behind you waits for an NPC that is never coming. Always check
+<code>Has Active Passage Relationship</code> after a refusal before you send the NPC anywhere.</p>
+<p>Note that <strong>Blocked does not refuse.</strong> It answers <code>Queued</code> and holds the request until the
+passage reopens, so nobody has to ask twice and nothing polls the passage.</p>
+<hr>
+<h3 id="ts-one-way-traffic-refuses-the-side-i-expected">One-way traffic refuses the side I expected</h3>
+<p><code>One Way Entry Side</code> names the side traffic comes FROM. Side A means A → B. A request from the
+other side is refused with <code>Rejected</code> and creates nothing at all — it does not even queue.</p>
+<p>Switching a passage to One Way does not evict agents already waiting on what has just become
+the forbidden side.</p>
+<hr>
+<h3 id="ts-the-availability-field-is-greyed-out-during-play">The Availability field is greyed out during Play</h3>
+<p>That is deliberate. The Details field sets the <strong>starting</strong> state; at runtime, availability must
+change through <code>Set Passage Availability</code>, because that call is what re-runs scheduling and
+releases the waiting agents.</p>
+<p>Writing the field directly would change what the passage reports without moving anybody — a
+passage that says "Available" while its queue stands still, which is the exact deadlock this
+plugin exists to prevent.</p>
+<p>Stop play and the field is editable again.</p>
+<hr>
+<h3 id="ts-something-is-physically-blocking-the-doorway">Something is physically blocking the doorway</h3>
+<p><strong>The scheduler cannot clear an obstruction, and it will not pretend to.</strong></p>
+<p>If a body, a crate or a frozen NPC is sitting in the opening, the passage will keep granting
+permission to agents who then cannot get through. Timeouts will reclaim their reservations, and
+the queue will keep cycling. Nothing recovers, because nothing in the plugin can move the
+obstacle.</p>
+<p>That is game logic. Detect it, move it, destroy it, or call
+<code>Set Passage Availability (Blocked)</code> until the way is clear.</p>
+<p><strong>Timeouts reclaim OWNERSHIP, not space.</strong> They are the answer to "an agent abandoned its
+permission", never to "the doorway is full of furniture".</p>
+<p><code>BP_PassageDemoControls</code> shows one way to own this, and both of its rules are worth copying:</p>
+<ol>
+<li>
+<strong>Count the obstructions; do not toggle a flag.</strong> The passage stays shut until the <em>last</em>
+body is clear. Otherwise the first NPC to get out reopens a doorway a second one is still
+standing in.</li>
+<li>
+<strong>Clearing the obstruction does not reopen anything.</strong> Announce that the way is clear and
+stop. Reopening is a separate, explicit decision.</li>
+</ol>
+<p>Rule 2 usually surprises people, so see "the passage is stuck Blocked" below before you change
+it. Press <strong>8</strong> in the Quick Start map to watch both rules do their job.</p>
+<hr>
+<h3 id="ts-the-passage-is-stuck-blocked-and-nothing-gets-through">The passage is stuck Blocked and nothing gets through</h3>
+<p><strong>First: in the shipped example this is not a bug.</strong> Press <strong>1</strong>.</p>
+<p>When a body is stranded in the doorway the demo blocks the passage, and when the body is clear
+it says so and <strong>stops</strong>. It does not reopen. That is deliberate, and it is the correction for a
+real defect — see below.</p>
+<p>If it is your own code, check in this order:</p>
+<ol>
+<li>
+<strong>Read the Availability on the controller.</strong> If it says <code>Blocked</code>, this is not a scheduler
+problem — the scheduler is doing exactly what it was told.</li>
+<li>
+<strong>Find what set it.</strong> Turn on <strong>Verbose Logging</strong>; every <code>Set Passage Availability</code> is
+reported.</li>
+<li>
+<strong>Did your clearance path ever run?</strong> A block applied when a body got stuck is released by a
+<em>matching</em> clearance. If the block is raised on an NPC event but the clearance is raised on a
+physical overlap ending, an NPC destroyed or teleported in between never reports it and the
+count never comes back down. The sample guards this with an <code>Obstructing</code> flag so the two are
+always balanced, and clamps its count at zero so a stray clearance cannot drive it negative.</li>
+</ol>
+<h4 id="ts-why-the-sample-will-not-reopen-for-you">Why the sample will not reopen for you</h4>
+<p>Because it cannot tell whether the closure in front of it is still its own.</p>
+<p>A "the block is mine" flag plus a check that the passage still reads <code>Blocked</code> is not
+ownership. <strong>An enum value cannot say who set it.</strong> Measured, with a
+real body timing out in the doorway and the game making its own decision while it was stuck:</p>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Game's decision</th>
+<th>At real capsule clearance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Disabled</code></td>
+<td>held correctly</td>
+</tr>
+<tr>
+<td><code>Blocked</code></td>
+<td><strong>overwritten to <code>Available</code>, and a fresh NPC admitted into the doorway</strong></td>
+</tr>
+<tr>
+<td>
+<code>Disabled</code>, then <code>Blocked</code>
+</td>
+<td><strong>overwritten to <code>Available</code>, and a fresh NPC admitted</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>If your own recovery reopens automatically, this is the bug you have, and it will be hard to
+see: checking at the moment of clearance passed, because the NPC admitted through the reopened
+doorway timed out a moment later and set <code>Blocked</code> again.</p>
+<p><strong>Leaving a passage shut is always safe.</strong> Reopening one is a decision about the whole game.</p>
+<hr>
+<h3 id="ts-ai-passage-navigator-the-npc-walks-straight-past-the-passage-or-move-to-with-passages-returns-false">AI Passage Navigator: the NPC walks straight past the passage, or Move To With Passages returns false</h3>
+<div class=tw><table>
+<thead>
+<tr>
+<th>Log line (<code>LogAIPassage</code>)</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>has no doorway zone, so Move To With Passages ignores it</code> (once per passage), or <code>has no zone volume attached</code> (from <code>Cross Passage To</code>)</td>
+<td>The doorway trigger box is missing, untagged, or not attached to the passage. Selecting the passage in the editor shows <strong>NO DOORWAY ZONE ATTACHED</strong> in red</td>
+<td>Tag the box <code>AIPassageZone</code>, then in the Outliner drag it onto the passage to attach it</td>
+</tr>
+<tr>
+<td><code>the owner is not a Pawn possessed by an AI Controller</code></td>
+<td>Called before possession, or on a non-Pawn</td>
+<td>Call it after possession (Begin Play of an auto-possessed AI is fine)</td>
+</tr>
+<tr>
+<td><code>no navigable route</code></td>
+<td>The destination is off the nav mesh with no reachable point near it</td>
+<td>Check the nav mesh with the <code>P</code> key in the editor</td>
+</tr>
+<tr>
+<td>nothing at all, and the NPC walks through</td>
+<td>The route never enters the trigger box — for example, the box does not reach the floor</td>
+<td>Make the box cover the full opening, floor to head height</td>
+</tr>
+<tr>
+<td><code>Waiting place N on side A of ... cannot be reached</code></td>
+<td>The waiting line is longer than the space behind the passage: it runs into a wall, off a floor or off a bridge</td>
+<td>Turn or move that side's queue anchor so the line has room, or lower <code>Queue Slot Spacing</code>. Nothing breaks meanwhile: the NPCs whose places are out of reach wait where they stand and move up with the line</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>On Move Finished</code> fires <code>Refused</code> when the passage turns the request away (One Way from the
+other side, or Disabled) — the NPC stops on its own side, exactly as a refused NPC should.</p>
+<p>The navigator also uses your AI Controller's <strong>Default Navigation Filter Class</strong>, exactly as
+<code>Move To Location</code> does. If an NPC refuses a route you expected it to take, check that filter
+first: the navigator plans and walks under it.</p>
+<hr>
+<h3 id="ts-ai-passage-navigator-crowds">AI Passage Navigator: crowds</h3>
+<div class=tw><table>
+<thead>
+<tr>
+<th>What you see</th>
+<th>Why</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>An NPC of yours was moved, or stepped aside on its own</td>
+<td>In a crowd jam (<code>Resolve Crowd Jams</code>), an idle NPC that carries the navigator makes way — up to 1.5 m — and a squeezing NPC may push other navigator NPCs aside. <strong>Only NPCs that carry the AI Passage Navigator and are driven by an AI Controller are ever moved.</strong> Your player and characters without the navigator never are</td>
+<td>Turn <code>Resolve Crowd Jams</code> off on NPCs your own AI keeps in place (a guard at a post, a vendor)</td>
+</tr>
+<tr>
+<td>An NPC looks a little narrower and taller for a moment</td>
+<td>It is squeezing past (<code>Squeeze Through Crowds</code>): for about 1.5 s its mesh is 5% narrower and 5% taller, and so is any navigator NPC it pushes. It goes back afterwards</td>
+<td>Nothing, or turn <code>Squeeze Through Crowds</code> off</td>
+</tr>
+<tr>
+<td>Overlap events fire between pawns in a crowd</td>
+<td>While it squeezes, the NPC's capsule lets other pawns overlap it</td>
+<td>Ignore pawn overlaps from NPCs that are squeezing, or turn <code>Squeeze Through Crowds</code> off</td>
+</tr>
+<tr>
+<td>An NPC that died blocks the line</td>
+<td>A navigator NPC gives its place up by itself about a second after its AI Controller goes away. With the agent component alone, nothing tells the passage</td>
+<td>Call <code>Cancel Current Passage</code> (agent) or <code>Stop Passage Move</code> (navigator) in your death logic</td>
+</tr>
+<tr>
+<td>A big group order hitches for a frame</td>
+<td>Each <code>Move To With Passages</code> plans a route at once</td>
+<td>Give the orders over a few frames — for example 20 per frame</td>
+</tr>
+<tr>
+<td>NPCs cross fine but some never reach a crowded destination</td>
+<td>Unreal's RVO avoidance is on (Character Movement → Use RVO Avoidance). RVO and path following fight in a packed group: in our test 20–27 of 32 arrived with RVO on, 32 of 32 with it off</td>
+<td>Turn RVO avoidance off on NPCs that use the navigator</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h3 id="ts-a-cancel-from-the-controller-reports-failed-not-cancelled">A cancel from the controller reports Failed, not Cancelled</h3>
+<p>Calling <code>Cancel Passage Request</code> <strong>on the controller</strong> for an NPC that is still queued fires
+<code>On Passage Failed</code> (reason Invalidated) on that NPC's agent component; for an NPC that already
+holds permission it arrives as <code>Cancelled</code>. Treat both as "lost my place". Cancelling from the
+NPC's own side (<code>Cancel Current Passage</code> on the agent) is always <code>Cancelled</code>.</p>
+<hr>
+<h3 id="ts-the-plugins-own-tests-report-warnings">The plugin's own tests report warnings</h3>
+<p>The plugin ships its automated tests (Session Frontend → Automation → <code>AIPassageController</code>).
+Many of them log warnings <strong>on purpose</strong>: they drive the failure paths — timeouts, refusals, a
+missing doorway zone, a hidden cursor — and the warning is the behaviour being tested. A test
+fails only on an error. In version 1.0.0: 174 tests, all passing, 60 of them with such warnings.</p>
+<hr>
+<h3 id="ts-nothing-here-matches">Nothing here matches</h3>
+<p>Turn on <strong>Verbose Logging</strong> on the controller and watch the <code>LogAIPassage</code> category. It reports
+every request, grant, phase change and release with the reason.</p>
+<p><code>Get Debug String</code> returns a compact one-line summary for logs (for example <code>occ=1/1</code>,
+<code>CLOSED</code>) — the same facts as the overlay, in a shorter form — if you would rather print it
+yourself.</p>
+
+<hr>
+
+</main>
+</div>
+<footer><div class=in>
+  <span>AI Passage Controller &middot; v1.0.0 &middot; Unreal Engine 5.8 &middot; Win64</span>
+  <span>&copy; 2026 Pierogi3</span>
+  <a href="https://4rev.github.io/rothenburg-series/">The Rothenburg Series</a>
+</div></footer>
+</body>
+</html>
