@@ -390,16 +390,17 @@ past, the way people do in a crowd. For about 1.5 s:</p>
 <li>its capsule is 5% narrower and lets other pawns overlap it, so overlap events can fire on
 pawns it brushes;</li>
 <li>its mesh is 5% narrower and 5% taller;</li>
-<li>the bodies round it are kept at least 95% of their summed widths apart. <strong>Only other NPCs that
+<li>the bodies round it are kept at least 95% of their summed widths apart — except where a wall,
+a ledge or a doorway leaves no room: there it squeezes past them for a moment. <strong>Only other NPCs that
 carry the navigator and are driven by an AI Controller give way</strong> — and they take the same 5%
 shape for a moment. Your player, any character without the navigator, and an NPC holding a
 passage's permission are never moved, and the squeezer does not push or walk through them.
 Walled in by such bodies, an NPC keeps trying (in our test, still trying after 90 s);</li>
-<li>nobody is pushed into a doorway, off a ledge or through a wall.</li>
+<li>nobody is pushed into a doorway, off a ledge, through a wall or into another body.</li>
 </ul>
-<p>Everything returns to normal afterwards; if your game changed the capsule, its collision or the
+<p>Before it is back to full width, the NPC makes full-width room. Everything returns to normal afterwards; if your game changed the capsule, its collision or the
 mesh scale in the meantime, your value stays. In our dense-crowd test an NPC got out of a ring
-of 18 standing navigator NPCs in 8.5 s, and the most any of them was moved was 57 cm.</p>
+of 18 standing navigator NPCs in 10 s, and the most any of them was moved was 54 cm.</p>
 <p><strong>Use the navigator without Unreal's RVO avoidance</strong> on the same NPCs. With RVO on, the passage
 itself still works — in our two-way test all 32 NPCs crossed with no timeouts — but only 20–27 of
 the 32 then reached their crowded destinations, against 32 of 32 with RVO off: RVO and path
@@ -1824,7 +1825,7 @@ through a door.</p>
 <ul>
 <li>No Tick on the controller and none on the agent component.</li>
 <li>The optional navigator ticks only while it squeezes through a crowd (about 1.5 s at a time).
-Measured with 120 NPCs jammed at one door: on average 0.04–0.05 ms per squeezing NPC per frame,
+Measured with 120 NPCs jammed at one door: on average 0.06–0.08 ms per squeezing NPC per frame,
 under 2 ms in the worst frame (editor Play-in-Editor, Development build, a laptop Ryzen 7
 5800HS; not measured in a packaged game). Each order costs one synchronous path query per order and
 per passage crossed, plus one box test per passage per path segment — so give a big group's
